@@ -13,18 +13,7 @@ import {
   Timer, 
   Layers, 
   Calculator, 
-  Sparkles, 
-  Flame, 
-  BookOpen, 
   ShieldCheck,
-  FolderTree,
-  FileCode,
-  GitPullRequest,
-  GitFork,
-  Key,
-  RotateCw,
-  Trophy,
-  Zap,
   Star
 } from 'lucide-react';
 
@@ -33,335 +22,212 @@ interface HomeViewProps {
   onNavigate: (view: 'exam' | 'flashcards' | 'math' | 'tools' | 'day2') => void;
 }
 
-const iconMap: Record<string, any> = {
-  Terminal,
-  GitBranch,
-  Code,
-  Cpu,
-  FolderTree,
-  FileCode,
-  GitPullRequest,
-  GitFork,
-  ShieldCheck,
-  Key,
-  Calculator,
-  Layers,
-  RotateCw
-};
-
 export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }) => {
   const { progress, isLessonCompleted, getModuleProgress, getTotalProgress } = useProgress();
   const totalStats = getTotalProgress();
 
   return (
-    <div className="space-y-10 pb-20">
-      {/* 1. БЛОК "МОЙ ПУТЬ" (ДНИ 1-2 ПРОЙДЕНЫ, ДЕНЬ 3 ВПЕРЕДИ, ЭКЗАМЕН ЦЕЛЬ) */}
-      <div className="p-6 sm:p-8 rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-indigo-950/40 shadow-2xl space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              Персональный трек: студентка breashee (er-d9)
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Мой путь в Школе 21: От новичка до экзамена
+    <div className="space-y-8 pb-16">
+      {/* 1. Clean Path Summary Header */}
+      <div className="p-5 sm:p-7 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="space-y-0.5">
+            <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
+              Школа 21 • er-d9 • breashee
+            </span>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+              Путь в C: Программа закрепления
             </h1>
           </div>
 
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => onNavigate('day2')}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all"
-            >
-              <ShieldCheck size={16} className="text-emerald-400" />
-              <span>Разбор квестов Дня 2</span>
-            </button>
+          <div className="flex items-center gap-2">
             <button
               onClick={() => onNavigate('exam')}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-950 transition-all active:scale-95"
+              className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm"
             >
-              <Timer size={16} />
+              <Timer size={14} />
               <span>Экзамен (10 задач)</span>
+            </button>
+            <button
+              onClick={() => onNavigate('day2')}
+              className="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-medium transition-colors"
+            >
+              Квесты Дня 2
             </button>
           </div>
         </div>
 
-        {/* Roadmap Milestones (Дни 1-2 -> День 3 -> Экзамен) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-          {/* Step 1: Days 1-2 */}
-          <div className="p-4 rounded-2xl bg-slate-950/80 border border-emerald-500/40 relative overflow-hidden space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono text-emerald-400 font-bold uppercase">Этап 1</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30 flex items-center gap-1">
-                <CheckCircle2 size={12} /> Пройдено ✅
-              </span>
+        {/* 3 Steps Overview */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-semibold text-slate-700 dark:text-slate-300">1. Дни 1–2</span>
+              <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">Сдано ✅</span>
             </div>
-            <h4 className="font-bold text-slate-100 text-sm">Дни 1–2: База, I/O и Math</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Hello, named_hello, arithmetic, max, float_compare, crack.
+            <p className="text-[11px] text-slate-500">
+              База C, printf/scanf, math.h, эпсилон.
             </p>
           </div>
 
-          {/* Step 2: Day 3 */}
-          <div className="p-4 rounded-2xl bg-slate-950/80 border border-amber-500/50 relative overflow-hidden space-y-2 shadow-lg shadow-amber-950/20 ring-1 ring-amber-500/30">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono text-amber-300 font-bold uppercase">Этап 2 (Сейчас)</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-semibold border border-amber-500/30 flex items-center gap-1">
-                <Zap size={12} /> Впереди 🎯
-              </span>
+          <div className="p-3 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 space-y-1">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-semibold text-amber-800 dark:text-amber-300">2. День 3 (D03)</span>
+              <span className="text-[10px] text-amber-700 dark:text-amber-400 font-bold">Решаю сама 💪</span>
             </div>
-            <h4 className="font-bold text-slate-100 text-sm">День 3: D03T03 Квесты</h4>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              1948.c, char_decode.c, quest3.c, door_functions.c. Решаем сами!
+            <p className="text-[11px] text-slate-600 dark:text-slate-400">
+              Уроки 7, 9, 10, 11, 12 как подготовка.
             </p>
           </div>
 
-          {/* Step 3: Exam Goal */}
-          <div className="p-4 rounded-2xl bg-slate-950/80 border border-indigo-500/40 relative overflow-hidden space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono text-indigo-400 font-bold uppercase">Цель</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-semibold border border-indigo-500/30 flex items-center gap-1">
-                <Trophy size={12} /> Финал 🏆
-              </span>
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-semibold text-slate-700 dark:text-slate-300">3. Экзамен</span>
+              <span className="text-[10px] text-slate-500 font-mono">10 задач 🎯</span>
             </div>
-            <h4 className="font-bold text-slate-100 text-sm">Симулятор Экзамена</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              10 задач на время (45 мин) без подсказок и интернета.
+            <p className="text-[11px] text-slate-500">
+              Проверка готовности без стресса.
             </p>
           </div>
         </div>
 
-        {/* Global Progress Bar */}
-        <div className="space-y-2 pt-2">
-          <div className="flex items-center justify-between text-xs font-mono">
-            <span className="text-slate-400">Прогресс уроков тренажёра:</span>
-            <span className="text-emerald-400 font-bold">
+        {/* Progress Bar */}
+        <div className="space-y-1.5 pt-1">
+          <div className="flex items-center justify-between text-xs font-mono text-slate-500">
+            <span>Прогресс курса:</span>
+            <span className="font-bold text-slate-800 dark:text-slate-200">
               {totalStats.completedLessons} из {totalStats.totalLessons} уроков ({totalStats.percentage}%)
             </span>
           </div>
-          <div className="h-3 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800 p-0.5">
+          <div className="h-2 w-full bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden border border-slate-200 dark:border-slate-800">
             <div 
-              className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-indigo-500 rounded-full transition-all duration-700 shadow-md shadow-emerald-500/50"
-              style={{ width: `${Math.max(4, totalStats.percentage)}%` }}
+              className="h-full bg-emerald-500 transition-all duration-500"
+              style={{ width: `${Math.max(3, totalStats.percentage)}%` }}
             />
           </div>
         </div>
       </div>
 
-      {/* Grid: Quick Tools & Pomodoro */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div 
-            onClick={() => onNavigate('flashcards')}
-            className="p-5 rounded-2xl border border-slate-800 bg-slate-900/60 hover:border-indigo-500/50 hover:bg-slate-900/90 transition-all cursor-pointer space-y-3 group"
-          >
-            <div className="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-              <Layers size={20} />
-            </div>
-            <div>
-              <div className="flex items-center justify-between">
-                <h4 className="font-bold text-slate-100 text-sm">Словарь карточек</h4>
-                <span className="text-[11px] font-mono text-indigo-400">60 шт</span>
-              </div>
-              <p className="text-xs text-slate-400 mt-1">
-                40 команд (ls, cd, chmod, kill, git...) + 20 концепций (%c, эпсилон, рекурсия).
-              </p>
-            </div>
+      {/* Quick Access Tools Bar */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button
+          onClick={() => onNavigate('flashcards')}
+          className="p-3 rounded-xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-left transition-colors"
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <Layers size={14} className="text-indigo-500" />
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Словарь</span>
           </div>
+          <p className="text-[11px] text-slate-500">60 карточек команд и правил</p>
+        </button>
 
-          <div 
-            onClick={() => onNavigate('math')}
-            className="p-5 rounded-2xl border border-slate-800 bg-slate-900/60 hover:border-amber-500/50 hover:bg-slate-900/90 transition-all cursor-pointer space-y-3 group"
-          >
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-              <Calculator size={20} />
-            </div>
-            <div>
-              <div className="flex items-center justify-between">
-                <h4 className="font-bold text-slate-100 text-sm">Дрилл «Кирпичики»</h4>
-                <span className="text-[11px] font-mono text-amber-400">D03</span>
-              </div>
-              <p className="text-xs text-slate-400 mt-1">
-                Разложение на простые множители (91, 100, 32) и ловушки квадратов (9, 25, 49).
-              </p>
-            </div>
+        <button
+          onClick={() => onNavigate('math')}
+          className="p-3 rounded-xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-left transition-colors"
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <Calculator size={14} className="text-amber-500" />
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Кирпичики</span>
           </div>
+          <p className="text-[11px] text-slate-500">Простые множители и 91, 100, 32</p>
+        </button>
 
-          <div 
-            onClick={() => onNavigate('day2')}
-            className="p-5 rounded-2xl border border-slate-800 bg-slate-900/60 hover:border-emerald-500/50 hover:bg-slate-900/90 transition-all cursor-pointer space-y-3 group"
-          >
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-              <ShieldCheck size={20} />
-            </div>
-            <div>
-              <div className="flex items-center justify-between">
-                <h4 className="font-bold text-slate-100 text-sm">Квесты Дня 2</h4>
-                <span className="text-[11px] font-mono text-emerald-400">7 квестов</span>
-              </div>
-              <p className="text-xs text-slate-400 mt-1">
-                Построчный разбор боевого кода и тренировка вопросов пира на проверке.
-              </p>
-            </div>
+        <button
+          onClick={() => onNavigate('day2')}
+          className="p-3 rounded-xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-left transition-colors"
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <ShieldCheck size={14} className="text-emerald-500" />
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Квесты Дня 2</span>
           </div>
+          <p className="text-[11px] text-slate-500">Построчный разбор решений</p>
+        </button>
 
-          <div 
-            onClick={() => onNavigate('tools')}
-            className="p-5 rounded-2xl border border-slate-800 bg-slate-900/60 hover:border-teal-500/50 hover:bg-slate-900/90 transition-all cursor-pointer space-y-3 group"
-          >
-            <div className="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-              <Terminal size={20} />
-            </div>
-            <div>
-              <div className="flex items-center justify-between">
-                <h4 className="font-bold text-slate-100 text-sm">Терминал & Песочница</h4>
-                <span className="text-[11px] font-mono text-teal-400">er-d9</span>
-              </div>
-              <p className="text-xs text-slate-400 mt-1">
-                Консоль кампуса, Hex/ASCII конвертер и визуализатор стека рекурсии.
-              </p>
-            </div>
+        <button
+          onClick={() => onNavigate('tools')}
+          className="p-3 rounded-xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-left transition-colors"
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <Terminal size={14} className="text-teal-500" />
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Песочница</span>
           </div>
-        </div>
-
-        {/* Pomodoro Focus Timer */}
-        <div className="lg:col-span-1">
-          <PomodoroTimer />
-        </div>
+          <p className="text-[11px] text-slate-500">Консоль er-d9 и утилиты</p>
+        </button>
       </div>
 
-      {/* 4 Modules Interactive Curriculum */}
-      <div className="space-y-8">
+      {/* 4 Modules & 12 Lessons */}
+      <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-extrabold text-white tracking-tight">
-              Учебная программа: 4 Модуля → 12 Уроков
-            </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Каждый урок содержит теорию, ловушки, упражнения с блокировкой и проверочный тест
-            </p>
-          </div>
+          <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+            Уроки (4 модуля)
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-8">
-          {modulesData.map((module) => {
+        <div className="space-y-4">
+          {modulesData.map(module => {
             const modProgress = getModuleProgress(module.id);
             const isModComplete = modProgress.completed === modProgress.total && modProgress.total > 0;
-            const ModIcon = iconMap[module.icon] || Terminal;
 
             return (
               <div 
                 key={module.id}
-                className={`rounded-3xl border transition-all duration-300 overflow-hidden ${
-                  isModComplete
-                    ? 'border-emerald-500/40 bg-slate-900/70'
-                    : 'border-slate-800 bg-slate-900/40 hover:border-slate-700'
-                }`}
+                className="rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm"
               >
                 {/* Module Header */}
-                <div className="p-6 border-b border-slate-800 bg-slate-900/60 flex flex-wrap items-center justify-between gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br ${module.color} text-white shadow-lg`}>
-                      <ModIcon size={24} />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                          {module.badge}
-                        </span>
-                        {isModComplete && (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30 flex items-center gap-1">
-                            <CheckCircle2 size={12} /> Модуль освоен
-                          </span>
-                        )}
-                      </div>
-                      <h3 className="text-lg font-bold text-slate-100">
-                        {module.title}
-                      </h3>
-                    </div>
+                <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-950/40">
+                  <div>
+                    <h3 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
+                      {module.title}
+                    </h3>
+                    <p className="text-[11px] text-slate-500">{module.description}</p>
                   </div>
-
-                  {/* Module Progress percentage */}
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
-                      <div className="text-xs font-mono text-slate-400">
-                        Уроки: {modProgress.completed}/{modProgress.total}
-                      </div>
-                      <div className="text-sm font-mono font-bold text-emerald-400">
-                        {modProgress.percentage}%
-                      </div>
-                    </div>
-                    <div className="w-20 h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
-                      <div 
-                        className="h-full bg-emerald-400 rounded-full transition-all duration-500"
-                        style={{ width: `${modProgress.percentage}%` }}
-                      />
-                    </div>
-                  </div>
+                  <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                    {modProgress.completed}/{modProgress.total}
+                  </span>
                 </div>
 
-                {/* Module Lessons Grid */}
-                <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Lessons in Module */}
+                <div className="divide-y divide-slate-100 dark:divide-slate-800/60">
                   {module.lessons.map(lessonId => {
                     const lesson = lessonsData.find(l => l.id === lessonId);
                     if (!lesson) return null;
 
                     const isDone = isLessonCompleted(lesson.id);
-                    const solvedExercises = lesson.exercises.filter(
-                      ex => progress.completedExercises[ex.id]?.attemptedMyself
-                    ).length;
 
                     return (
                       <div
                         key={lesson.id}
                         onClick={() => onSelectLesson(lesson.id)}
-                        className={`group relative p-5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between space-y-4 ${
-                          isDone
-                            ? 'border-emerald-500/40 bg-emerald-950/10 hover:border-emerald-500/70 hover:bg-emerald-950/20'
-                            : lesson.isDay3Prep
-                            ? 'border-amber-500/40 bg-amber-950/10 hover:border-amber-500/70 hover:bg-amber-950/20'
-                            : 'border-slate-800 bg-slate-950/50 hover:border-indigo-500/50 hover:bg-slate-900/60'
-                        }`}
+                        className="p-3.5 sm:p-4 flex items-center justify-between gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/40 cursor-pointer transition-colors group"
                       >
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <span className="w-8 h-8 rounded-xl bg-slate-900 text-slate-300 flex items-center justify-center text-xs font-mono font-bold group-hover:scale-110 transition-transform">
-                              {lesson.number}
-                            </span>
-                            {isDone ? (
-                              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                                <CheckCircle2 size={12} /> Пройден
-                              </span>
-                            ) : lesson.isDay3Prep ? (
-                              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
-                                <Star size={10} className="fill-amber-400 text-amber-400" /> День 3
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center gap-1 text-[11px] text-slate-500 font-mono">
-                                <Circle size={10} /> В процессе
-                              </span>
-                            )}
-                          </div>
-
+                        <div className="flex items-center gap-3">
+                          <span className="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-xs font-bold flex items-center justify-center shrink-0">
+                            {lesson.number}
+                          </span>
                           <div>
-                            <h4 className="font-bold text-sm text-slate-100 group-hover:text-emerald-300 transition-colors line-clamp-1">
-                              {lesson.title}
-                            </h4>
-                            <p className="text-xs text-slate-400 line-clamp-2 mt-1 leading-relaxed">
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-semibold text-xs sm:text-sm text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                                {lesson.title}
+                              </h4>
+                              {isDone && (
+                                <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-medium">
+                                  Пройден
+                                </span>
+                              )}
+                              {lesson.isDay3Prep && !isDone && (
+                                <span className="text-[10px] px-1.5 py-0.2 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-medium">
+                                  День 3 ⭐
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-[11px] text-slate-500 mt-0.5">
                               {lesson.subtitle}
                             </p>
                           </div>
                         </div>
 
-                        {/* Footer stats */}
-                        <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-                          <span className="font-mono text-[11px]">
-                            Упражнения: {solvedExercises}/{lesson.exercises.length}
-                          </span>
-                          <span className="flex items-center gap-1 text-indigo-400 font-medium group-hover:translate-x-0.5 transition-transform">
-                            Открыть <ArrowRight size={12} />
-                          </span>
-                        </div>
+                        <span className="flex items-center gap-1 text-xs text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors">
+                          <ArrowRight size={13} />
+                        </span>
                       </div>
                     );
                   })}

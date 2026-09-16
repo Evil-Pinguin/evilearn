@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Timer, Play, Pause, RotateCcw, Coffee, Sparkles, Bell } from 'lucide-react';
+import { Play, Pause, RotateCcw } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const PomodoroTimer: React.FC = () => {
@@ -16,9 +16,7 @@ export const PomodoroTimer: React.FC = () => {
       }, 1000);
     } else if (timeLeft === 0) {
       if (mode === 'work') {
-        try {
-          confetti({ particleCount: 50, spread: 60 });
-        } catch (e) {}
+        try { confetti({ particleCount: 40, spread: 50 }); } catch {}
         setSessionsCompleted(prev => prev + 1);
         setMode('break');
         setTimeLeft(5 * 60);
@@ -45,95 +43,41 @@ export const PomodoroTimer: React.FC = () => {
   const mins = Math.floor(timeLeft / 60);
   const secs = timeLeft % 60;
   const timeFormatted = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  const totalSeconds = mode === 'work' ? 25 * 60 : 5 * 60;
-  const progressPercent = Math.round(((totalSeconds - timeLeft) / totalSeconds) * 100);
 
   return (
-    <div className="p-4 sm:p-5 rounded-2xl border border-slate-800 bg-slate-900/90 shadow-xl space-y-3">
+    <div className="p-4 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="w-8 h-8 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold">
-            🍅
+          <span className="text-sm">🍅</span>
+          <span className="font-semibold text-xs text-slate-900 dark:text-slate-100">
+            Помодоро ({mode === 'work' ? '25м фокус' : '5м отдых'})
           </span>
-          <div>
-            <h4 className="font-bold text-slate-100 text-xs flex items-center gap-1.5">
-              Помодоро-таймер практики
-              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-400">
-                25 мин
-              </span>
-            </h4>
-            <p className="text-[10px] text-slate-400">
-              {mode === 'work' ? '🎯 Фокус на коде и упражнениях' : '☕ Время отдыха (5 минут)'}
-            </p>
-          </div>
         </div>
-
-        <div className="flex items-center gap-1 font-mono text-[11px] text-slate-400">
-          <span>Сеты:</span>
-          <span className="font-bold text-emerald-400">{sessionsCompleted}</span>
-        </div>
+        <span className="text-[11px] font-mono text-slate-500">
+          Сеты: <strong className="text-emerald-600 dark:text-emerald-400">{sessionsCompleted}</strong>
+        </span>
       </div>
 
-      {/* Mode Switches */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => switchMode('work')}
-          className={`flex-1 py-1 rounded-lg text-xs font-semibold transition-all ${
-            mode === 'work'
-              ? 'bg-rose-600 text-white shadow-md shadow-rose-950'
-              : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
-          }`}
-        >
-          Практика (25м)
-        </button>
-        <button
-          onClick={() => switchMode('break')}
-          className={`flex-1 py-1 rounded-lg text-xs font-semibold transition-all ${
-            mode === 'break'
-              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950'
-              : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
-          }`}
-        >
-          Отдых (5м)
-        </button>
-      </div>
-
-      {/* Timer Display */}
-      <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
-        <div className="font-mono text-2xl font-extrabold text-white tracking-wider pl-2">
+      <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+        <span className="font-mono text-xl font-bold text-slate-900 dark:text-white pl-1">
           {timeFormatted}
-        </div>
+        </span>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <button
             onClick={() => setIsRunning(!isRunning)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
-              isRunning
-                ? 'bg-amber-500 hover:bg-amber-400 text-slate-950'
-                : 'bg-emerald-600 hover:bg-emerald-500 text-slate-950 shadow-md shadow-emerald-950'
-            }`}
+            className="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-colors"
           >
-            {isRunning ? <Pause size={13} /> : <Play size={13} />}
-            <span>{isRunning ? 'Пауза' : 'Старт'}</span>
+            {isRunning ? 'Пауза' : 'Старт'}
           </button>
           <button
             onClick={resetTimer}
-            className="p-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800"
-            title="Сбросить"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            title="Сброс"
           >
-            <RotateCcw size={13} />
+            <RotateCcw size={12} />
           </button>
         </div>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800">
-        <div 
-          className={`h-full transition-all duration-300 ${
-            mode === 'work' ? 'bg-rose-500' : 'bg-emerald-400'
-          }`}
-          style={{ width: `${progressPercent}%` }}
-        />
       </div>
     </div>
   );

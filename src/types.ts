@@ -13,7 +13,7 @@ export interface Exercise {
   }[];
   hint: string;
   solution: string;
-  solutionExplanation: string[]; // Line-by-line or section-by-section breakdown
+  solutionExplanation: string[];
   school21RulesNotice?: string;
 }
 
@@ -92,6 +92,7 @@ export interface ExamQuestion {
   category: string;
   type: 'code' | 'command' | 'choice' | 'number' | 'text';
   description: string;
+  hint: string;
   starterCode?: string;
   options?: string[];
   correctAnswer?: string | number;

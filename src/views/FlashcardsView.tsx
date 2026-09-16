@@ -5,15 +5,8 @@ import {
   Layers, 
   RotateCw, 
   CheckCircle2, 
-  RotateCcw, 
   Search, 
   Shuffle, 
-  Sparkles, 
-  Lightbulb, 
-  Terminal, 
-  Code, 
-  GitBranch, 
-  Wrench,
   ArrowRight,
   ArrowLeft
 } from 'lucide-react';
@@ -26,13 +19,11 @@ export const FlashcardsView: React.FC = () => {
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
 
   const categories = [
-    { id: 'all', label: 'Все карточки' },
-    { id: 'bash', label: '💻 Bash / Linux' },
-    { id: 'git', label: '🐙 Git & Flow' },
-    { id: 'c_basics', label: '⚙️ C Basics' },
-    { id: 'c_advanced', label: '🧠 C Advanced & Pointers' },
-    { id: 'tools', label: '🛠 GCC & Clang-Format' },
-    { id: 'school21', label: '🏫 Стандарты Школы 21' }
+    { id: 'all', label: 'Все (60)' },
+    { id: 'bash', label: '💻 Bash' },
+    { id: 'git', label: '🐙 Git' },
+    { id: 'tools', label: '🛠 GCC / Clang' },
+    { id: 'concepts', label: '🧠 Концепции' }
   ];
 
   const filteredCards = flashcardsData.filter(card => {
@@ -44,7 +35,6 @@ export const FlashcardsView: React.FC = () => {
   });
 
   const currentCard = filteredCards[currentIdx] || filteredCards[0];
-
   const knownCount = flashcardsData.filter(c => progress.flashcardStatus[c.id] === 'known').length;
   const masteryPercentage = Math.round((knownCount / flashcardsData.length) * 100);
 
@@ -66,45 +56,35 @@ export const FlashcardsView: React.FC = () => {
   const isCurrentKnown = currentCard ? progress.flashcardStatus[currentCard.id] === 'known' : false;
 
   return (
-    <div className="max-w-3xl mx-auto space-y-8 pb-20">
-      {/* Header & Stats */}
-      <div className="p-6 sm:p-8 rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-indigo-950/30 shadow-xl space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
-              <Layers size={24} />
-            </div>
-            <div>
-              <h1 className="text-2xl font-extrabold text-white">
-                Словарь команд и концепций
-              </h1>
-              <p className="text-xs text-slate-400">
-                Интерактивные флеш-карточки для быстрой тренировки памяти
-              </p>
-            </div>
+    <div className="max-w-2xl mx-auto space-y-5 pb-16">
+      {/* Header */}
+      <div className="p-4 sm:p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+              Словарь команд и правил
+            </h1>
+            <p className="text-xs text-slate-500">
+              Флеш-карточки для быстрого повторения
+            </p>
           </div>
-
-          <div className="text-right font-mono">
-            <span className="text-xs text-slate-400 block">Освоено карточек:</span>
-            <span className="text-lg font-bold text-emerald-400">
-              {knownCount} / {flashcardsData.length} ({masteryPercentage}%)
-            </span>
-          </div>
+          <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
+            Освоено: {knownCount}/{flashcardsData.length} ({masteryPercentage}%)
+          </span>
         </div>
 
-        {/* Progress Bar */}
-        <div className="w-full h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+        <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden">
           <div 
-            className="h-full bg-gradient-to-r from-indigo-500 to-emerald-400 rounded-full transition-all duration-500"
+            className="h-full bg-emerald-500 transition-all duration-300"
             style={{ width: `${masteryPercentage}%` }}
           />
         </div>
       </div>
 
-      {/* Filter & Search Bar */}
-      <div className="space-y-3">
-        <div className="flex items-center rounded-2xl bg-slate-950 border border-slate-800 px-4 py-2.5">
-          <Search size={16} className="text-slate-500 mr-2" />
+      {/* Filter and Search */}
+      <div className="space-y-2">
+        <div className="flex items-center rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1.5">
+          <Search size={14} className="text-slate-400 mr-2" />
           <input
             type="text"
             value={searchQuery}
@@ -112,13 +92,12 @@ export const FlashcardsView: React.FC = () => {
               setSearchQuery(e.target.value);
               setCurrentIdx(0);
             }}
-            placeholder="Поиск по вопросу или команде (например: nano, pointer, step, gcc)..."
-            className="w-full bg-transparent text-xs text-slate-200 placeholder-slate-600 focus:outline-none"
+            placeholder="Поиск по карточкам (например nano, gcc, extra, git)..."
+            className="w-full bg-transparent text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none"
           />
         </div>
 
-        {/* Category Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-2">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
           {categories.map(cat => (
             <button
               key={cat.id}
@@ -127,10 +106,10 @@ export const FlashcardsView: React.FC = () => {
                 setCurrentIdx(0);
                 setIsFlipped(false);
               }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-colors ${
+              className={`px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
                 activeCategory === cat.id
-                  ? 'bg-indigo-600 text-white font-semibold shadow-md'
-                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                  ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-semibold'
+                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
               }`}
             >
               {cat.label}
@@ -139,129 +118,105 @@ export const FlashcardsView: React.FC = () => {
         </div>
       </div>
 
-      {/* 3D Flashcard Component */}
+      {/* Card */}
       {filteredCards.length > 0 && currentCard ? (
-        <div className="space-y-6">
+        <div className="space-y-4">
           <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
             <span>Карточка {currentIdx + 1} из {filteredCards.length}</span>
             <span className="flex items-center gap-1">
-              Нажми на карточку, чтобы перевернуть <RotateCw size={12} />
+              Нажми для переворота <RotateCw size={11} />
             </span>
           </div>
 
-          <div 
+          <div
             onClick={() => setIsFlipped(!isFlipped)}
-            className="group relative min-h-80 w-full rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-8 shadow-2xl cursor-pointer hover:border-indigo-500/50 transition-all duration-300 flex flex-col justify-between"
+            className="min-h-64 w-full rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm cursor-pointer hover:border-slate-300 dark:hover:border-slate-700 transition-all flex flex-col justify-between"
           >
-            {/* Front & Back Content */}
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-mono px-3 py-1 rounded-full bg-slate-800 text-indigo-300 border border-slate-700 uppercase tracking-wider">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-mono text-slate-400 uppercase text-[10px]">
                   {currentCard.category}
                 </span>
-                <span className={`text-xs px-2.5 py-0.5 rounded-full font-semibold border ${
+                <span className={`px-2 py-0.5 rounded-full text-[11px] font-medium ${
                   isCurrentKnown 
-                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' 
-                    : 'bg-slate-800 text-slate-400 border-slate-700'
+                    ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300' 
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
                 }`}>
-                  {isCurrentKnown ? '✅ Освоено' : 'В процессе'}
+                  {isCurrentKnown ? 'Освоено ✅' : 'В процессе'}
                 </span>
               </div>
 
               {!isFlipped ? (
-                /* Front: Question */
-                <div className="space-y-4 py-6">
-                  <span className="text-xs font-mono uppercase tracking-wider text-slate-500">Вопрос:</span>
-                  <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug">
+                <div className="py-6 space-y-2">
+                  <span className="text-[10px] uppercase font-mono text-slate-400">Вопрос:</span>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-snug">
                     {currentCard.question}
                   </h3>
-                  <p className="text-xs text-indigo-400 font-mono">
-                    💡 Кликни для проверки ответа
-                  </p>
                 </div>
               ) : (
-                /* Back: Answer & Code */
-                <div className="space-y-4 py-2 animate-fadeIn">
-                  <span className="text-xs font-mono uppercase tracking-wider text-emerald-400">Ответ:</span>
-                  <h3 className="text-lg font-bold text-emerald-300 leading-snug">
+                <div className="py-2 space-y-3">
+                  <span className="text-[10px] uppercase font-mono text-emerald-600 dark:text-emerald-400 font-bold">Ответ:</span>
+                  <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 leading-relaxed">
                     {currentCard.answer}
-                  </h3>
-
+                  </p>
                   {currentCard.codeExample && (
-                    <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-slate-200 whitespace-pre-wrap leading-relaxed">
+                    <pre className="p-3 rounded-xl bg-slate-950 text-slate-200 text-xs font-mono whitespace-pre-wrap">
                       {currentCard.codeExample}
-                    </div>
-                  )}
-
-                  {currentCard.tip && (
-                    <div className="p-3 rounded-xl bg-amber-950/20 border border-amber-800/40 text-xs text-amber-200 flex items-start gap-2">
-                      <Lightbulb size={16} className="text-amber-400 shrink-0 mt-0.5" />
-                      <p>{currentCard.tip}</p>
-                    </div>
+                    </pre>
                   )}
                 </div>
               )}
             </div>
 
-            {/* Card Footer Actions */}
-            <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between" onClick={e => e.stopPropagation()}>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => toggleFlashcardKnown(currentCard.id)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                    isCurrentKnown
-                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                      : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700'
-                  }`}
-                >
-                  <CheckCircle2 size={14} className={isCurrentKnown ? 'text-emerald-400' : ''} />
-                  <span>{isCurrentKnown ? 'Знаю отлично ✅' : 'Отметить как освоенное'}</span>
-                </button>
-              </div>
+            <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between" onClick={e => e.stopPropagation()}>
+              <button
+                onClick={() => toggleFlashcardKnown(currentCard.id)}
+                className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
+                  isCurrentKnown
+                    ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200'
+                }`}
+              >
+                <CheckCircle2 size={13} />
+                <span>{isCurrentKnown ? 'Знаю отлично' : 'Отметить как освоенное'}</span>
+              </button>
 
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setIsFlipped(!isFlipped)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium"
-                >
-                  <RotateCw size={12} />
-                  <span>Перевернуть</span>
-                </button>
-              </div>
+              <button
+                onClick={() => setIsFlipped(!isFlipped)}
+                className="text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center gap-1"
+              >
+                <RotateCw size={12} />
+                <span>Перевернуть</span>
+              </button>
             </div>
           </div>
 
-          {/* Navigation Controls */}
+          {/* Nav */}
           <div className="flex items-center justify-between">
             <button
               onClick={handlePrev}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-800 transition-colors"
+              className="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium"
             >
-              <ArrowLeft size={14} />
-              <span>Предыдущая</span>
+              <ArrowLeft size={13} className="inline mr-1" /> Назад
             </button>
-
             <button
               onClick={handleShuffle}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-indigo-400 text-xs font-semibold border border-slate-800 transition-colors"
-              title="Случайная карточка"
+              className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs"
+              title="Случайная"
             >
-              <Shuffle size={14} />
-              <span>Случайная</span>
+              <Shuffle size={13} />
             </button>
-
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg transition-all"
+              className="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold"
             >
-              <span>Следующая</span>
-              <ArrowRight size={14} />
+              Вперёд <ArrowRight size={13} className="inline ml-1" />
             </button>
           </div>
         </div>
       ) : (
-        <div className="text-center py-12 text-slate-400 text-xs">
-          По запросу ничего не найдено. Попробуй сбросить фильтры.
+        <div className="text-center py-8 text-slate-400 text-xs">
+          Ничего не найдено.
         </div>
       )}
     </div>

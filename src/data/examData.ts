@@ -8,6 +8,7 @@ export const examQuestionsData: ExamQuestion[] = [
     type: 'code',
     points: 10,
     description: 'Напиши полную программу на C (с include <stdio.h> и main), которая печатает "I am ready!" (строго без \\n в конце).',
+    hint: 'Используй #include <stdio.h>, внутри main напиши printf("I am ready!"); и верни return 0;. Не ставь \\n.',
     starterCode: `#include <stdio.h>
 
 int main(void) {
@@ -28,6 +29,7 @@ int main(void) {
     type: 'code',
     points: 10,
     description: 'Напиши программу: читает целое число, печатает его квадрат. Если во вводе мусор (например "abc", "12.5" или "5x") — печатает "n/a".',
+    hint: 'Объяви int n; char extra; и проверь if (scanf("%d %c", &n, &extra) != 1) { printf("n/a"); return 0; } затем напечатай n * n.',
     starterCode: `#include <stdio.h>
 
 int main(void) {
@@ -43,7 +45,7 @@ int main(void) {
       { input: '5', expected: '25', description: '5 -> 25' },
       { input: '-4', expected: '16', description: '-4 -> 16' },
       { input: 'abc', expected: 'n/a', description: 'abc -> n/a' },
-      { id: 't4', input: '12.5', expected: 'n/a', description: '12.5 -> n/a' }
+      { input: '12.5', expected: 'n/a', description: '12.5 -> n/a' }
     ],
     explanation: 'Используется %c-ловушка: if (scanf("%d %c", &n, &extra) != 1) printf("n/a"); else printf("%d", n * n);'
   },
@@ -54,6 +56,7 @@ int main(void) {
     type: 'code',
     points: 10,
     description: 'Напиши программу: читает два целых числа, печатает меньшее. Вычисление меньшего числа ОБЯЗАНО быть вынесено в отдельную функцию (например min_of_two). Мусор -> n/a.',
+    hint: 'Создай выше main функцию: int min_of_two(int a, int b) { return (a < b) ? a : b; }. В main прочитай два числа: scanf("%d %d %c", &a, &b, &extra) != 2.',
     starterCode: `#include <stdio.h>
 
 int min_of_two(int a, int b) {
@@ -80,6 +83,7 @@ int main(void) {
     type: 'code',
     points: 10,
     description: 'Напиши программу: читает целое N, печатает сумму всех чётных чисел от 1 до N. Пример: при N=10 -> 30 (2+4+6+8+10). Мусор -> n/a.',
+    hint: 'Запусти цикл: int sum = 0; for (int i = 2; i <= n; i += 2) { sum += i; }. Не забудь валидацию ввода с extra.',
     starterCode: `#include <stdio.h>
 
 int main(void) {
@@ -106,6 +110,7 @@ int main(void) {
     type: 'code',
     points: 10,
     description: 'Напиши программу: читает дробное число (радиус r), печатает площадь круга πr² с ровно тремя знаками после точки (%.3f). π = 3.14159265358979. Мусор или r < 0 -> n/a.',
+    hint: 'double r; char extra; Чтение: scanf("%lf %c", &r, &extra). Формула: 3.14159265358979 * r * r. Печать: printf("%.3f", area);',
     starterCode: `#include <stdio.h>
 
 int main(void) {
@@ -131,6 +136,7 @@ int main(void) {
     type: 'code',
     points: 10,
     description: 'Напиши программу: читает один символ. Если это латинская буква (\'A\'..\'Z\', \'a\'..\'z\') -> печатает LETTER, если цифра (\'0\'..\'9\') -> DIGIT, иначе -> OTHER. При ошибке ввода -> n/a.',
+    hint: 'Проверяй диапазоны символов: (c >= \'A\' && c <= \'Z\') || (c >= \'a\' && c <= \'z\') для букв, и (c >= \'0\' && c <= \'9\') для цифр.',
     starterCode: `#include <stdio.h>
 
 int main(void) {
@@ -158,6 +164,7 @@ int main(void) {
     type: 'code',
     points: 10,
     description: 'Напиши программу: читает два целых положительных числа, печатает их наибольший общий делитель (НОД) по алгоритму Евклида вычитанием (заменяй большее число на разность большего и меньшего, пока они не станут равны). Мусор или числа <= 0 -> n/a.',
+    hint: 'Пока a != b, делай: if (a > b) a -= b; else b -= a;. В конце напечатай a.',
     starterCode: `#include <stdio.h>
 
 int main(void) {
@@ -187,6 +194,7 @@ int main(void) {
     type: 'code',
     points: 10,
     description: 'Напиши программу: НИЧЕГО не читает. Печатает таблицу для x от 1 до 10, в каждой строке: x, x² и x³, разделенные " | ". Формат строки: "x | x^2 | x^3\\n". Пример 7-й строки: "7 | 49 | 343\\n".',
+    hint: 'В цикле for (int i = 1; i <= 10; i++) печатай printf("%d | %d | %d\\n", i, i * i, i * i * i);',
     starterCode: `#include <stdio.h>
 
 int main(void) {
@@ -208,6 +216,7 @@ int main(void) {
     type: 'code',
     points: 10,
     description: 'Напиши программу: читает целое число N (от 0 до 12), вычисляет N! СТРОГО РЕКУРСИВНОЙ ФУНКЦИЕЙ factorial(). Пример: 5 -> 120. Мусор или N < 0 -> n/a.',
+    hint: 'int factorial(int n) { if (n <= 1) return 1; return n * factorial(n - 1); }',
     starterCode: `#include <stdio.h>
 
 int factorial(int n) {
@@ -240,6 +249,7 @@ int main(void) {
     type: 'code',
     points: 10,
     description: 'Напиши программу: читает целое N > 1, печатает его НАИБОЛЬШИЙ делитель, кроме самого числа N (собственный делитель). Пример: 100 -> 50, 17 -> 1. Мусор или N <= 1 -> n/a.',
+    hint: 'Начни проверку с d = n / 2 вниз до 1: for (int d = n / 2; d >= 1; d--) if (n % d == 0) { printf("%d", d); break; }',
     starterCode: `#include <stdio.h>
 
 int main(void) {

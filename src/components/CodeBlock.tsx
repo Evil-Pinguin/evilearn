@@ -25,57 +25,52 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   const lines = code.trim().split('\n');
 
   return (
-    <div className="my-3 rounded-xl overflow-hidden border border-slate-800 bg-slate-950/90 shadow-xl">
+    <div className="my-2.5 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 shadow-sm">
       {title && (
-        <div className="flex items-center justify-between px-4 py-2 bg-slate-900/90 border-b border-slate-800 text-xs font-mono text-slate-400">
+        <div className="flex items-center justify-between px-3.5 py-1.5 bg-slate-950 border-b border-slate-800 text-xs font-mono text-slate-400">
+          <span className="font-medium text-slate-300">{title}</span>
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block" />
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block" />
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
-            <span className="ml-2 font-medium text-slate-300">{title}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 uppercase tracking-wider">
+            <span className="text-[10px] px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 uppercase tracking-wider">
               {language}
             </span>
             <button
               onClick={handleCopy}
               className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors"
-              title="Скопировать код"
+              title="Скопировать"
             >
-              {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+              {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
             </button>
           </div>
         </div>
       )}
 
       {!title && (
-        <div className="flex justify-end p-2 bg-slate-900/40 border-b border-slate-800/50">
+        <div className="flex justify-end p-1.5 bg-slate-950/60 border-b border-slate-800/40">
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 px-2 py-1 rounded hover:bg-slate-850 transition-colors"
+            className="flex items-center gap-1 text-[11px] text-slate-400 hover:text-slate-200 px-2 py-0.5 rounded hover:bg-slate-800 transition-colors"
           >
             {copied ? (
               <>
-                <Check size={12} className="text-emerald-400" />
-                <span className="text-emerald-400 text-[11px]">Скопировано</span>
+                <Check size={11} className="text-emerald-400" />
+                <span className="text-emerald-400">Скопировано</span>
               </>
             ) : (
               <>
-                <Copy size={12} />
-                <span className="text-[11px]">Копировать</span>
+                <Copy size={11} />
+                <span>Копировать</span>
               </>
             )}
           </button>
         </div>
       )}
 
-      <div className="p-4 overflow-x-auto text-sm font-mono leading-relaxed text-slate-200">
+      <div className="p-3.5 overflow-x-auto text-xs font-mono leading-relaxed text-slate-200">
         <pre className="m-0 p-0">
           {lines.map((line, idx) => (
-            <div key={idx} className="flex hover:bg-slate-900/50 -mx-4 px-4 py-0.5">
+            <div key={idx} className="flex hover:bg-slate-800/40 -mx-3.5 px-3.5 py-0.2">
               {showLineNumbers && (
-                <span className="inline-block w-8 shrink-0 text-right pr-4 text-slate-600 select-none text-xs">
+                <span className="inline-block w-6 shrink-0 text-right pr-3 text-slate-500 select-none text-[11px]">
                   {idx + 1}
                 </span>
               )}

@@ -8,6 +8,7 @@
 
   body {
     font-family: var(--font-sans);
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   code, pre, kbd, samp {
@@ -15,45 +16,50 @@
   }
 }
 
-/* Custom terminal scrollbars */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Light & Dark root background overrides */
+html.dark body {
+  background-color: #090d16;
+  color: #f1f5f9;
 }
 
-::-webkit-scrollbar-track {
-  background: #0f172a;
+html.light body {
+  background-color: #f8fafc;
+  color: #0f172a;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #334155;
+/* Custom scrollbars */
+html.dark ::-webkit-scrollbar-track {
+  background: #090d16;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
   border-radius: 4px;
 }
-
-::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #334155;
 }
 
-/* Code styling */
-.code-editor-line {
-  counter-increment: line-number;
+html.light ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
-.code-editor-line::before {
-  content: counter(line-number);
-  display: inline-block;
-  width: 2rem;
-  margin-right: 1rem;
-  color: #64748b;
-  text-align: right;
-  user-select: none;
+/* 3D Flip Card Effect */
+.perspective-1000 {
+  perspective: 1000px;
 }
-
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.02); }
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
 }
-
-.animate-pulse-subtle {
-  animation: pulse-subtle 3s ease-in-out infinite;
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
 }

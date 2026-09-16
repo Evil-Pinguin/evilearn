@@ -16,24 +16,28 @@ import {
   Terminal,
   ShieldCheck,
   Send,
-  Sparkles
+  Lightbulb,
+  Clock,
+  Infinity as InfinityIcon
 } from 'lucide-react';
 
 export const ExamView: React.FC = () => {
   const { progress, saveExamResult } = useProgress();
   const [examStarted, setExamStarted] = useState<boolean>(false);
   const [isFinished, setIsFinished] = useState<boolean>(false);
+  const [useTimer, setUseTimer] = useState<boolean>(false); // Default to relaxed practice without stress
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState<number>(0);
-  const [timeLeftSeconds, setTimeLeftSeconds] = useState<number>(45 * 60); // 45 minutes
+  const [timeLeftSeconds, setTimeLeftSeconds] = useState<number>(45 * 60);
   const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [showQuestionHint, setShowQuestionHint] = useState<{ [qId: number]: boolean }>({});
 
   const [answers, setAnswers] = useState<{ [id: number]: string }>({});
   const [examScore, setExamScore] = useState<number>(0);
 
-  // Timer effect
+  // Timer effect only if useTimer is enabled
   useEffect(() => {
     let interval: any = null;
-    if (examStarted && !isFinished && !isPaused) {
+    if (examStarted && !isFinished && !isPaused && useTimer) {
       interval = setInterval(() => {
         setTimeLeftSeconds(prev => {
           if (prev <= 1) {
@@ -46,7 +50,7 @@ export const ExamView: React.FC = () => {
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [examStarted, isFinished, isPaused, answers]);
+  }, [examStarted, isFinished, isPaused, useTimer, answers]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -54,12 +58,14 @@ export const ExamView: React.FC = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const handleStartExam = () => {
+  const handleStartExam = (withTimer: boolean) => {
+    setUseTimer(withTimer);
     setExamStarted(true);
     setIsFinished(false);
     setCurrentQuestionIdx(0);
     setTimeLeftSeconds(45 * 60);
     setIsPaused(false);
+    setShowQuestionHint({});
     
     // Prepopulate starter code
     const initialAnswers: { [id: number]: string } = {};
@@ -73,6 +79,10 @@ export const ExamView: React.FC = () => {
 
   const handleAnswerChange = (qId: number, val: string) => {
     setAnswers(prev => ({ ...prev, [qId]: val }));
+  };
+
+  const toggleHint = (qId: number) => {
+    setShowQuestionHint(prev => ({ ...prev, [qId]: !prev[qId] }));
   };
 
   const handleFinishExam = () => {
@@ -99,12 +109,44 @@ export const ExamView: React.FC = () => {
         }
       } else if (q.type === 'code') {
         const code = userAns.toLowerCase();
-        if (q.id === 1) { // double_it
-          if (code.includes('tail_is_clean') && code.includes('scanf') && code.includes('n/a') && code.includes('return 0;')) {
+        if (q.id === 1) { // I am ready
+          if (code.includes('printf') && code.includes('i am ready!') && !code.includes('\\n')) {
             calculatedScore += q.points;
           }
-        } else if (q.id === 6) { // divide_by_sub
-          if (code.includes('while') && (code.includes('-=') || code.includes('-')) && code.includes('*q') && !code.includes('/') && !code.includes('%')) {
+        } else if (q.id === 2) { // Square of number
+          if (code.includes('scanf') && (code.includes('extra') || code.includes('tail_is_clean') || code.includes('n/a'))) {
+            calculatedScore += q.points;
+          }
+        } else if (q.id === 3) { // min_of_two
+          if (code.includes('min') && (code.includes('<') || code.includes('?'))) {
+            calculatedScore += q.points;
+          }
+        } else if (q.id === 4) { // sum_even
+          if (code.includes('for') && (code.includes('+= 2') || code.includes('% 2 == 0'))) {
+            calculatedScore += q.points;
+          }
+        } else if (q.id === 5) { // area circle
+          if (code.includes('%.3f') || (code.includes('3.14') && code.includes('* r * r'))) {
+            calculatedScore += q.points;
+          }
+        } else if (q.id === 6) { // letter / digit / other
+          if (code.includes('letter') && code.includes('digit') && code.includes('other')) {
+            calculatedScore += q.points;
+          }
+        } else if (q.id === 7) { // GCD euclid
+          if (code.includes('while') && code.includes('-=') && (code.includes('a != b') || code.includes('a > b'))) {
+            calculatedScore += q.points;
+          }
+        } else if (q.id === 8) { // Table
+          if (code.includes('for') && code.includes(' | ')) {
+            calculatedScore += q.points;
+          }
+        } else if (q.id === 9) { // Factorial
+          if (code.includes('factorial') && (code.includes('factorial(') || code.includes('* factorial'))) {
+            calculatedScore += q.points;
+          }
+        } else if (q.id === 10) { // Largest proper divisor
+          if (code.includes('for') && code.includes('% d == 0')) {
             calculatedScore += q.points;
           }
         }
@@ -113,7 +155,7 @@ export const ExamView: React.FC = () => {
 
     setExamScore(calculatedScore);
     setIsFinished(true);
-    const timeSpent = 45 * 60 - timeLeftSeconds;
+    const timeSpent = useTimer ? (45 * 60 - timeLeftSeconds) : 0;
     saveExamResult(calculatedScore, 100, answers, timeSpent);
   };
 
@@ -121,78 +163,78 @@ export const ExamView: React.FC = () => {
   const passed = (examScore / totalPoints) >= 0.75;
   const currentQ = examQuestionsData[currentQuestionIdx];
 
+  // 1. Initial Launch Screen
   if (!examStarted) {
     return (
-      <div className="max-w-3xl mx-auto space-y-8 py-8">
-        <div className="p-8 rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-indigo-950/40 text-center space-y-6 shadow-2xl">
-          <div className="w-16 h-16 rounded-3xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto shadow-lg">
-            <Timer size={32} />
+      <div className="max-w-3xl mx-auto space-y-6 py-4">
+        <div className="p-6 sm:p-8 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-center space-y-5 shadow-sm">
+          <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
+            <Timer size={24} />
           </div>
 
-          <div className="space-y-2">
-            <h1 className="text-3xl font-extrabold text-white tracking-tight">
-              Симулятор финального экзамена C & Школа 21
+          <div className="space-y-1.5">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+              Симулятор экзамена C (10 задач)
             </h1>
-            <p className="text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
-              10 практических и теоретических задач на время. Проверяются навыки написания C-кода, валидации с <code className="text-emerald-400">n/a</code>, математики простых делителей, работы с указателями и Git.
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-lg mx-auto">
+              Практика написания кода по стандарту Школы 21. Доступны подсказки к каждой задаче и режим без таймера для комфортного обучения.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-xl mx-auto text-xs font-mono">
-            <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-              <div className="text-slate-400">Время:</div>
-              <div className="text-lg font-bold text-slate-100 mt-1">45:00 мин</div>
-            </div>
-            <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-              <div className="text-slate-400">Количество задач:</div>
-              <div className="text-lg font-bold text-slate-100 mt-1">10 задач</div>
-            </div>
-            <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-              <div className="text-slate-400">Проходной балл:</div>
-              <div className="text-lg font-bold text-emerald-400 mt-1">75%+ (75 XP)</div>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-amber-950/20 border border-amber-800/40 text-xs text-amber-200 max-w-xl mx-auto text-left leading-relaxed">
-            <div className="font-semibold text-amber-300 mb-1 flex items-center gap-1.5">
-              <AlertTriangle size={14} /> Правила симулятора экзамена:
-            </div>
-            <ul className="list-disc list-inside space-y-1 text-slate-300">
-              <li>Запрещено подглядывать в готовые решения и интернет</li>
-              <li>Код должен строго следовать принципам Дейкстры (одна точка выхода)</li>
-              <li>Любой мусорный ввод должен обрабатываться выводом <code>n/a</code></li>
-            </ul>
-          </div>
-
-          <div>
+          {/* Mode Selection */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md mx-auto pt-2">
             <button
-              onClick={handleStartExam}
-              className="px-8 py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-extrabold text-sm transition-all shadow-xl shadow-emerald-950 active:scale-95 cursor-pointer"
+              onClick={() => handleStartExam(false)}
+              className="p-4 rounded-xl border border-emerald-500/40 bg-emerald-50/50 dark:bg-emerald-950/20 hover:bg-emerald-100/60 dark:hover:bg-emerald-950/40 text-left transition-all group"
             >
-              Начать экзамен (45 минут)
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                  <InfinityIcon size={14} /> Без таймера
+                </span>
+                <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-200/60 dark:bg-emerald-800/40 text-emerald-800 dark:text-emerald-200 font-medium">
+                  Рекомендуется
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-600 dark:text-slate-400">
+                Спокойная практика в своём темпе с подсказками к каждому заданию.
+              </p>
+            </button>
+
+            <button
+              onClick={() => handleStartExam(true)}
+              className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-indigo-400 bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 text-left transition-all group"
+            >
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                  <Clock size={14} /> С таймером (45 мин)
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                Режим симуляции реального экзамена с обратным отсчётом времени.
+              </p>
             </button>
           </div>
         </div>
 
         {/* Previous Attempts history */}
         {progress.examAttempts.length > 0 && (
-          <div className="p-6 rounded-2xl border border-slate-800 bg-slate-900/40 space-y-4">
-            <h3 className="font-bold text-slate-200 text-sm">История предыдущих попыток:</h3>
-            <div className="space-y-2">
-              {progress.examAttempts.map((att, i) => (
-                <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs">
+          <div className="p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3">
+            <h3 className="font-semibold text-slate-900 dark:text-slate-200 text-xs">История попыток:</h3>
+            <div className="space-y-1.5">
+              {progress.examAttempts.slice(0, 3).map((att, i) => (
+                <div key={i} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs">
                   <div className="flex items-center gap-2">
                     {att.passed ? (
-                      <CheckCircle2 size={16} className="text-emerald-400" />
+                      <CheckCircle2 size={14} className="text-emerald-500" />
                     ) : (
-                      <XCircle size={16} className="text-rose-400" />
+                      <XCircle size={14} className="text-rose-500" />
                     )}
-                    <span className="font-medium text-slate-200">
-                      {att.passed ? 'Сдано успешно' : 'Не сдано'} ({att.score}/{att.maxScore} баллов)
+                    <span className="font-medium text-slate-700 dark:text-slate-300">
+                      {att.passed ? 'Сдано' : 'Не сдано'} ({att.score}/{att.maxScore} баллов)
                     </span>
                   </div>
-                  <span className="text-slate-500 font-mono">
-                    {new Date(att.date).toLocaleDateString()} {new Date(att.date).toLocaleTimeString()}
+                  <span className="text-slate-400 font-mono text-[11px]">
+                    {new Date(att.date).toLocaleDateString()}
                   </span>
                 </div>
               ))}
@@ -203,122 +245,81 @@ export const ExamView: React.FC = () => {
     );
   }
 
-  // Finished Screen
+  // 2. Finished Screen
   if (isFinished) {
     return (
-      <div className="max-w-4xl mx-auto space-y-8 py-8 animate-fadeIn">
-        <div className={`p-8 rounded-3xl border text-center space-y-6 shadow-2xl ${
+      <div className="max-w-4xl mx-auto space-y-6 py-4">
+        <div className={`p-6 sm:p-8 rounded-2xl border text-center space-y-4 ${
           passed 
-            ? 'border-emerald-500/50 bg-gradient-to-br from-slate-900 via-emerald-950/30 to-slate-950' 
-            : 'border-rose-500/50 bg-gradient-to-br from-slate-900 via-rose-950/30 to-slate-950'
+            ? 'border-emerald-300 dark:border-emerald-800 bg-emerald-50/40 dark:bg-emerald-950/20' 
+            : 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900'
         }`}>
-          <div className={`w-20 h-20 rounded-3xl flex items-center justify-center mx-auto shadow-xl ${
-            passed ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'
+          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto ${
+            passed ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
           }`}>
-            {passed ? <Trophy size={40} /> : <AlertTriangle size={40} />}
+            {passed ? <Trophy size={28} /> : <CheckCircle2 size={28} />}
           </div>
 
-          <div className="space-y-2">
-            <span className="text-xs font-mono uppercase tracking-wider text-slate-400">
-              Итоговый вердикт
-            </span>
-            <h1 className="text-3xl font-extrabold text-white">
-              {passed ? '🎉 ЭКЗАМЕН УСПЕШНО СДАН!' : '⚠️ ЭКЗАМЕН НЕ СДАН'}
+          <div className="space-y-1">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+              {passed ? '🎉 Экзамен сдан!' : 'Практика завершена'}
             </h1>
-            <p className="text-sm text-slate-300 max-w-lg mx-auto">
+            <p className="text-xs text-slate-600 dark:text-slate-400 max-w-md mx-auto">
               {passed 
-                ? 'Отличный результат! Ты уверенно владеешь валидацией, математикой простых множителей, работой с указателями и Git. Ты готова к проверкам следующего дня!'
-                : 'Не расстраивайся! Проанализируй ошибки ниже, повтори темы "Кирпичики" и валидацию scanf, и попробуй ещё раз.'}
+                ? 'Отличный результат! Код написан уверенно, ты готова к следующим проектам.'
+                : 'Разбери решения задач ниже и повтори сложные темы.'}
             </p>
           </div>
 
-          <div className="flex items-center justify-center gap-6 text-sm font-mono">
-            <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
-              <span className="text-xs text-slate-400 block">Набранный балл:</span>
-              <span className={`text-2xl font-extrabold ${passed ? 'text-emerald-400' : 'text-rose-400'}`}>
-                {examScore} / 100
-              </span>
-            </div>
-            <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
-              <span className="text-xs text-slate-400 block">Время выполнения:</span>
-              <span className="text-2xl font-extrabold text-slate-200">
-                {formatTime(45 * 60 - timeLeftSeconds)}
-              </span>
-            </div>
+          <div className="inline-flex items-center gap-4 text-xs font-mono p-3 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+            <span>Результат: <strong className={passed ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-700 dark:text-slate-300'}>{examScore} / 100</strong></span>
+            {useTimer && <span>Время: {formatTime(45 * 60 - timeLeftSeconds)}</span>}
           </div>
 
           <div>
             <button
-              onClick={handleStartExam}
-              className="px-6 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition-colors"
+              onClick={() => handleStartExam(false)}
+              className="px-5 py-2 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-semibold hover:opacity-90 transition-opacity"
             >
-              Пройти повторно
+              Пройти ещё раз
             </button>
           </div>
         </div>
 
         {/* Detailed Review per Question */}
-        <div className="space-y-6">
-          <h3 className="text-xl font-bold text-white">Подробный разбор каждого задания:</h3>
+        <div className="space-y-4">
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white">Разбор заданий:</h3>
 
           {examQuestionsData.map((q, idx) => {
             const userAns = answers[q.id] || '';
-            let isQCorrect = false;
-
-            if (q.type === 'number') {
-              isQCorrect = parseInt(userAns) === q.correctAnswer;
-            } else if (q.type === 'choice') {
-              isQCorrect = userAns === q.correctAnswer;
-            } else if (q.type === 'command') {
-              const nu = userAns.toLowerCase().replace(/\s+/g, ' ');
-              const nc = String(q.correctAnswer).toLowerCase().replace(/\s+/g, ' ');
-              isQCorrect = nu === nc || nu.includes(nc);
-            } else if (q.type === 'code') {
-              const code = userAns.toLowerCase();
-              if (q.id === 1) isQCorrect = code.includes('tail_is_clean') && code.includes('scanf') && code.includes('n/a');
-              if (q.id === 6) isQCorrect = code.includes('while') && code.includes('*q');
-            }
-
             return (
               <div
                 key={q.id}
-                className={`p-6 rounded-2xl border space-y-4 ${
-                  isQCorrect 
-                    ? 'border-emerald-500/30 bg-slate-900/50' 
-                    : 'border-rose-500/30 bg-slate-900/50'
-                }`}
+                className="p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="w-7 h-7 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center text-xs font-mono font-bold">
-                      #{idx + 1}
+                  <div className="flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center text-xs font-mono font-bold">
+                      {idx + 1}
                     </span>
-                    <h4 className="font-bold text-slate-100 text-sm">{q.title}</h4>
+                    <h4 className="font-semibold text-slate-900 dark:text-slate-100 text-xs">{q.title}</h4>
                   </div>
-                  <span className={`text-xs font-mono font-bold px-2.5 py-1 rounded-full border ${
-                    isQCorrect 
-                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' 
-                      : 'bg-rose-500/20 text-rose-300 border-rose-500/30'
-                  }`}>
-                    {isQCorrect ? `+${q.points} баллов` : '0 баллов'}
+                  <span className="text-[11px] font-mono text-slate-500">
+                    {q.points} баллов
                   </span>
                 </div>
 
-                <p className="text-xs text-slate-300 leading-relaxed">{q.description}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{q.description}</p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-mono">
-                  <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                    <span className="text-slate-500 block mb-1">Твой ответ:</span>
-                    <pre className="text-slate-200 whitespace-pre-wrap">{userAns || '<пусто>'}</pre>
+                {userAns && (
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono">
+                    <span className="text-slate-400 text-[10px] block mb-1">Твой ответ:</span>
+                    <pre className="text-slate-800 dark:text-slate-200 whitespace-pre-wrap">{userAns}</pre>
                   </div>
-                  <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                    <span className="text-slate-500 block mb-1">Правильный ответ / эталон:</span>
-                    <pre className="text-emerald-400 whitespace-pre-wrap">{String(q.correctAnswer || 'Код по стандартам Школы 21')}</pre>
-                  </div>
-                </div>
+                )}
 
-                <div className="p-3 rounded-xl bg-indigo-950/30 border border-indigo-800/40 text-xs text-indigo-200">
-                  <span className="font-semibold text-indigo-300">💡 Разбор задания: </span>
+                <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/40 text-xs text-emerald-900 dark:text-emerald-200">
+                  <span className="font-semibold text-emerald-700 dark:text-emerald-300">💡 Пояснение: </span>
                   {q.explanation}
                 </div>
               </div>
@@ -329,31 +330,30 @@ export const ExamView: React.FC = () => {
     );
   }
 
-  // Active Exam view
+  // 3. Active Exam View
   return (
-    <div className="max-w-4xl mx-auto space-y-6 pb-20">
-      {/* Top Exam Header & Timer Bar */}
-      <div className="sticky top-20 z-30 p-4 rounded-2xl bg-slate-950/90 backdrop-blur-md border border-slate-800 shadow-xl flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className={`px-3 py-1.5 rounded-xl text-xs font-mono font-extrabold flex items-center gap-2 border ${
-            timeLeftSeconds < 300 
-              ? 'bg-rose-500/20 text-rose-300 border-rose-500/40 animate-pulse' 
-              : 'bg-slate-900 text-emerald-400 border-slate-800'
-          }`}>
-            <Timer size={16} />
-            <span>Осталось: {formatTime(timeLeftSeconds)}</span>
-          </div>
-          <button
-            onClick={() => setIsPaused(!isPaused)}
-            className="p-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800"
-            title={isPaused ? 'Продолжить' : 'Пауза'}
-          >
-            {isPaused ? <Play size={14} /> : <Pause size={14} />}
-          </button>
+    <div className="max-w-3xl mx-auto space-y-4 pb-16">
+      {/* Top Bar with Question Tabs and optional Timer */}
+      <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+        <div className="flex items-center gap-2">
+          {useTimer ? (
+            <div className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 ${
+              timeLeftSeconds < 300 
+                ? 'bg-rose-100 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300' 
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200'
+            }`}>
+              <Timer size={13} />
+              <span>{formatTime(timeLeftSeconds)}</span>
+            </div>
+          ) : (
+            <span className="text-xs text-slate-500 font-mono flex items-center gap-1">
+              <InfinityIcon size={13} className="text-emerald-500" /> Без ограничения времени
+            </span>
+          )}
         </div>
 
         {/* Question Selector Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto py-1">
+        <div className="flex items-center gap-1 overflow-x-auto">
           {examQuestionsData.map((q, idx) => {
             const hasAns = Boolean((answers[q.id] || '').trim());
             const isCurr = currentQuestionIdx === idx;
@@ -361,12 +361,12 @@ export const ExamView: React.FC = () => {
               <button
                 key={q.id}
                 onClick={() => setCurrentQuestionIdx(idx)}
-                className={`w-8 h-8 rounded-xl text-xs font-mono font-bold transition-all ${
+                className={`w-7 h-7 rounded-lg text-xs font-mono font-semibold transition-colors ${
                   isCurr
-                    ? 'bg-indigo-600 text-white shadow-md ring-2 ring-indigo-400'
+                    ? 'bg-emerald-600 text-white font-bold'
                     : hasAns
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                    : 'bg-slate-900 text-slate-400 border border-slate-800 hover:text-white'
+                    ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
                 }`}
               >
                 {idx + 1}
@@ -377,161 +377,135 @@ export const ExamView: React.FC = () => {
 
         <button
           onClick={handleFinishExam}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-all shadow-lg shadow-rose-950 cursor-pointer"
+          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-900 dark:bg-slate-100 hover:opacity-90 text-white dark:text-slate-900 text-xs font-semibold transition-opacity cursor-pointer"
         >
-          <Send size={13} />
-          <span>Завершить экзамен</span>
+          <Send size={12} />
+          <span>Завершить</span>
         </button>
       </div>
 
-      {isPaused ? (
-        <div className="p-16 text-center rounded-3xl bg-slate-900/60 border border-slate-800 space-y-4">
-          <Pause size={48} className="mx-auto text-amber-400" />
-          <h3 className="text-xl font-bold text-white">Экзамен на паузе</h3>
-          <p className="text-xs text-slate-400">Таймер остановлен. Нажми кнопку ниже, чтобы продолжить.</p>
+      {/* Active Question Card */}
+      <div className="p-5 sm:p-6 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-7 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-mono font-bold text-xs">
+              {currentQuestionIdx + 1}
+            </span>
+            <div>
+              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">
+                {currentQ.category}
+              </span>
+              <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+                {currentQ.title}
+              </h2>
+            </div>
+          </div>
+
+          {/* Hint Button */}
           <button
-            onClick={() => setIsPaused(false)}
-            className="px-6 py-2.5 rounded-xl bg-emerald-600 text-slate-950 text-xs font-bold"
+            onClick={() => toggleHint(currentQ.id)}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
+              showQuestionHint[currentQ.id]
+                ? 'bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            }`}
           >
-            Продолжить решение
+            <Lightbulb size={13} className={showQuestionHint[currentQ.id] ? 'text-amber-500 fill-amber-500' : ''} />
+            <span>{showQuestionHint[currentQ.id] ? 'Скрыть подсказку' : 'Подсказка'}</span>
           </button>
         </div>
-      ) : (
-        /* Active Question Card */
-        <div className="p-6 sm:p-8 rounded-3xl border border-slate-800 bg-slate-900/80 shadow-2xl space-y-6">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-            <div className="flex items-center gap-3">
-              <span className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-mono font-bold text-sm">
-                #{currentQuestionIdx + 1}
-              </span>
-              <div>
-                <span className="text-[11px] font-mono uppercase tracking-wider text-indigo-400 font-semibold">
-                  {currentQ.category}
-                </span>
-                <h2 className="text-lg font-bold text-white">{currentQ.title}</h2>
-              </div>
-            </div>
-            <span className="text-xs font-mono px-3 py-1 rounded-lg bg-slate-950 text-emerald-400 border border-slate-800 font-bold">
-              {currentQ.points} баллов
-            </span>
-          </div>
 
-          <div className="text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">
-            {currentQ.description}
-          </div>
-
-          {/* Input Area Based on Question Type */}
-          <div className="pt-2">
-            {currentQ.type === 'code' && (
-              <div className="space-y-2">
-                <div className="text-xs text-slate-400 font-mono flex items-center gap-2">
-                  <Terminal size={14} className="text-emerald-400" />
-                  <span>Редактор C-кода:</span>
-                </div>
-                <textarea
-                  value={answers[currentQ.id] || ''}
-                  onChange={(e) => handleAnswerChange(currentQ.id, e.target.value)}
-                  rows={12}
-                  className="w-full bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-2xl p-4 font-mono text-xs text-slate-100 placeholder-slate-600 focus:outline-none leading-relaxed"
-                  placeholder="// Твой C код..."
-                  spellCheck={false}
-                />
-              </div>
-            )}
-
-            {currentQ.type === 'command' && (
-              <div className="space-y-2">
-                <div className="text-xs text-slate-400 font-mono">Введи команду консоли:</div>
-                <div className="flex items-center rounded-xl bg-slate-950 border border-slate-800 focus-within:border-indigo-500 px-3 py-2">
-                  <span className="text-emerald-400 font-mono text-xs mr-2 select-none">$</span>
-                  <input
-                    type="text"
-                    value={answers[currentQ.id] || ''}
-                    onChange={(e) => handleAnswerChange(currentQ.id, e.target.value)}
-                    placeholder="gcc ..., git ..."
-                    className="w-full bg-transparent font-mono text-xs text-slate-100 placeholder-slate-600 focus:outline-none"
-                    spellCheck={false}
-                  />
-                </div>
-              </div>
-            )}
-
-            {currentQ.type === 'number' && (
-              <div className="space-y-2 max-w-xs">
-                <div className="text-xs text-slate-400 font-mono">Числовой ответ:</div>
-                <input
-                  type="number"
-                  value={answers[currentQ.id] || ''}
-                  onChange={(e) => handleAnswerChange(currentQ.id, e.target.value)}
-                  placeholder="Введите число..."
-                  className="w-full bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-2.5 font-mono text-sm text-emerald-400 font-bold focus:outline-none"
-                />
-              </div>
-            )}
-
-            {currentQ.type === 'choice' && currentQ.options && (
-              <div className="space-y-2">
-                <div className="text-xs text-slate-400 font-mono mb-2">Выберите один вариант:</div>
-                <div className="space-y-2">
-                  {currentQ.options.map((opt, oIdx) => {
-                    const isSelected = answers[currentQ.id] === opt;
-                    return (
-                      <label
-                        key={oIdx}
-                        onClick={() => handleAnswerChange(currentQ.id, opt)}
-                        className={`flex items-start gap-3 p-3.5 rounded-xl border text-xs cursor-pointer transition-all ${
-                          isSelected
-                            ? 'bg-indigo-950/40 border-indigo-500 text-indigo-100'
-                            : 'bg-slate-950/50 border-slate-800 text-slate-300 hover:border-slate-700'
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name={`exam-q-${currentQ.id}`}
-                          checked={isSelected}
-                          onChange={() => handleAnswerChange(currentQ.id, opt)}
-                          className="mt-0.5 text-indigo-500"
-                        />
-                        <span className="flex-1 whitespace-pre-wrap font-mono">{opt}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Navigation between Questions */}
-          <div className="pt-6 border-t border-slate-800 flex items-center justify-between">
-            <button
-              onClick={() => setCurrentQuestionIdx(Math.max(0, currentQuestionIdx - 1))}
-              disabled={currentQuestionIdx === 0}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-800 disabled:opacity-40"
-            >
-              <ArrowLeft size={14} />
-              <span>Предыдущая</span>
-            </button>
-
-            {currentQuestionIdx < examQuestionsData.length - 1 ? (
-              <button
-                onClick={() => setCurrentQuestionIdx(currentQuestionIdx + 1)}
-                className="flex items-center gap-2 px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg"
-              >
-                <span>Следующая</span>
-                <ArrowRight size={14} />
-              </button>
-            ) : (
-              <button
-                onClick={handleFinishExam}
-                className="flex items-center gap-2 px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 text-xs font-bold shadow-lg"
-              >
-                <span>Завершить и сдать</span>
-                <Send size={14} />
-              </button>
-            )}
-          </div>
+        <div className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+          {currentQ.description}
         </div>
-      )}
+
+        {/* Hint Box if toggled */}
+        {showQuestionHint[currentQ.id] && (
+          <div className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
+            <div className="font-semibold text-amber-800 dark:text-amber-300 mb-0.5 flex items-center gap-1">
+              <Lightbulb size={13} /> Подсказка:
+            </div>
+            <p>{currentQ.hint}</p>
+          </div>
+        )}
+
+        {/* Code/Command Editor */}
+        <div className="pt-1">
+          {currentQ.type === 'code' && (
+            <div className="space-y-1.5">
+              <div className="text-[11px] text-slate-500 font-mono flex items-center gap-1.5">
+                <Terminal size={12} className="text-emerald-500" />
+                <span>Редактор C-кода:</span>
+              </div>
+              <textarea
+                value={answers[currentQ.id] || ''}
+                onChange={(e) => handleAnswerChange(currentQ.id, e.target.value)}
+                rows={10}
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 rounded-xl p-3.5 font-mono text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none leading-relaxed"
+                placeholder="// Напиши код решения..."
+                spellCheck={false}
+              />
+            </div>
+          )}
+
+          {currentQ.type === 'command' && (
+            <div className="space-y-1.5">
+              <div className="text-[11px] text-slate-500 font-mono">Команда:</div>
+              <input
+                type="text"
+                value={answers[currentQ.id] || ''}
+                onChange={(e) => handleAnswerChange(currentQ.id, e.target.value)}
+                placeholder="gcc ..., git ..."
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 rounded-xl px-3 py-2 font-mono text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none"
+                spellCheck={false}
+              />
+            </div>
+          )}
+
+          {currentQ.type === 'number' && (
+            <div className="space-y-1.5 max-w-xs">
+              <div className="text-[11px] text-slate-500 font-mono">Числовой ответ:</div>
+              <input
+                type="number"
+                value={answers[currentQ.id] || ''}
+                onChange={(e) => handleAnswerChange(currentQ.id, e.target.value)}
+                placeholder="Введи число..."
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 rounded-xl px-3 py-2 font-mono text-sm font-bold text-slate-900 dark:text-slate-100 focus:outline-none"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Navigation between Questions */}
+        <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          <button
+            onClick={() => setCurrentQuestionIdx(Math.max(0, currentQuestionIdx - 1))}
+            disabled={currentQuestionIdx === 0}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium disabled:opacity-40"
+          >
+            <ArrowLeft size={13} />
+            <span>Предыдущая</span>
+          </button>
+
+          {currentQuestionIdx < examQuestionsData.length - 1 ? (
+            <button
+              onClick={() => setCurrentQuestionIdx(currentQuestionIdx + 1)}
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold"
+            >
+              <span>Следующая</span>
+              <ArrowRight size={13} />
+            </button>
+          ) : (
+            <button
+              onClick={handleFinishExam}
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-semibold"
+            >
+              <span>Завершить и проверить</span>
+              <Send size={13} />
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

@@ -15,8 +15,7 @@ import {
   Grid, 
   BookOpen, 
   ShieldCheck,
-  FileCode,
-  Sparkles
+  FileCode
 } from 'lucide-react';
 
 export const ToolsView: React.FC = () => {
@@ -24,34 +23,28 @@ export const ToolsView: React.FC = () => {
 
   const tabs = [
     { id: 'terminal', label: 'Терминал er-d9', icon: Terminal },
-    { id: 'math', label: 'Кирпичики & Простые', icon: Calculator },
+    { id: 'math', label: 'Кирпичики', icon: Calculator },
     { id: 'hex', label: 'Hex ↔ ASCII', icon: Binary },
     { id: 'recursion', label: 'Стек Fibonacci', icon: GitFork },
-    { id: 'grid', label: 'Сетка графиков', icon: Grid },
-    { id: 'cheatsheet', label: 'Шпаргалка Школы 21', icon: BookOpen }
+    { id: 'grid', label: 'Сетка 2π/41', icon: Grid },
+    { id: 'cheatsheet', label: 'Шпаргалка', icon: BookOpen }
   ] as const;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 pb-20">
+    <div className="max-w-3xl mx-auto space-y-5 pb-16">
       {/* Header */}
-      <div className="p-6 sm:p-8 rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-indigo-950/30 shadow-xl space-y-3">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
-            <Wrench size={24} />
-          </div>
-          <div>
-            <h1 className="text-2xl font-extrabold text-white">
-              Песочница и интерактивные инструменты
-            </h1>
-            <p className="text-xs text-slate-400">
-              Визуализаторы, эмулятор терминала кампуса и калькуляторы для проверки кода
-            </p>
-          </div>
-        </div>
+      <div className="p-4 sm:p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-1 shadow-sm">
+        <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <Wrench size={18} className="text-teal-500" />
+          Песочница и интерактивные инструменты
+        </h1>
+        <p className="text-xs text-slate-500">
+          Эмулятор консоли er-d9, конвертеры и шпаргалки
+        </p>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
         {tabs.map(tab => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -59,120 +52,63 @@ export const ToolsView: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-colors ${
                 isActive
-                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-950'
-                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                  ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-semibold'
+                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-50'
               }`}
             >
-              <Icon size={14} className={isActive ? 'text-white' : 'text-slate-400'} />
+              <Icon size={13} />
               <span>{tab.label}</span>
             </button>
           );
         })}
       </div>
 
-      {/* Active Tab Body */}
-      <div className="animate-fadeIn">
-        {activeTab === 'terminal' && (
-          <div className="space-y-4">
-            <div className="text-xs text-slate-400">
-              Интерактивная консоль машины <code className="text-emerald-400">er-d9</code>. Поддерживает команды Linux, GCC, Git и утилиты фильтрации.
-            </div>
-            <VirtualTerminal />
-          </div>
-        )}
-
-        {activeTab === 'math' && (
-          <div className="space-y-4">
-            <div className="text-xs text-slate-400">
-              Разложение чисел на простые множители-кирпичики с обнаружением составных ловушек.
-            </div>
-            <PrimeFactorWidget />
-          </div>
-        )}
-
-        {activeTab === 'hex' && (
-          <div className="space-y-4">
-            <div className="text-xs text-slate-400">
-              Конвертер шестнадцатеричных последовательностей в ASCII и обратно.
-            </div>
-            <HexAsciiWidget />
-          </div>
-        )}
-
-        {activeTab === 'recursion' && (
-          <div className="space-y-4">
-            <div className="text-xs text-slate-400">
-              Визуализация рекурсивных вызовов функции Fibonacci и предотвращение переполнения стека.
-            </div>
-            <RecursionTreeWidget />
-          </div>
-        )}
-
-        {activeTab === 'grid' && (
-          <div className="space-y-4">
-            <div className="text-xs text-slate-400">
-              Правило дискретизации: почему для 42 точек требуется делить длину на 41 промежуток.
-            </div>
-            <GridCalculatorWidget />
-          </div>
-        )}
+      {/* Content */}
+      <div>
+        {activeTab === 'terminal' && <VirtualTerminal />}
+        {activeTab === 'math' && <PrimeFactorWidget />}
+        {activeTab === 'hex' && <HexAsciiWidget />}
+        {activeTab === 'recursion' && <RecursionTreeWidget />}
+        {activeTab === 'grid' && <GridCalculatorWidget />}
 
         {activeTab === 'cheatsheet' && (
-          <div className="p-6 sm:p-8 rounded-3xl border border-slate-800 bg-slate-900/60 shadow-xl space-y-6">
-            <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
-              <ShieldCheck className="text-emerald-400" size={20} />
-              <h2 className="text-lg font-bold text-white">
-                Шпаргалка стандартов разработки Школы 21
-              </h2>
-            </div>
+          <div className="p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
+            <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+              <ShieldCheck size={16} className="text-emerald-500" />
+              Шпаргалка стандартов Школы 21
+            </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed">
-              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
-                <h4 className="font-bold text-indigo-300 flex items-center gap-1.5">
-                  <FileCode size={14} /> Компиляция GCC
-                </h4>
-                <div className="font-mono bg-slate-900 p-2.5 rounded-xl text-slate-300 text-[11px]">
-                  gcc -Wall -Werror -Wextra -std=c11 src.c -lm -o binary
-                </div>
-                <p className="text-slate-400 text-[11px]">
-                  Флаг <code>-lm</code> для math.h ставится строго после файлов!
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="font-semibold text-slate-800 dark:text-slate-200 block">Сборка GCC:</span>
+                <code className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono block">
+                  gcc -Wall -Werror -Wextra -std=c11 file.c -lm -o bin
+                </code>
+                <p className="text-[11px] text-slate-500">-lm ставится в самый конец!</p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="font-semibold text-slate-800 dark:text-slate-200 block">Clang-format:</span>
+                <code className="text-[11px] text-indigo-600 dark:text-indigo-400 font-mono block">
+                  clang-format -n src/*.c (проверка)<br />
+                  clang-format -i src/*.c (исправление)
+                </code>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="font-semibold text-slate-800 dark:text-slate-200 block">Single Exit Point:</span>
+                <p className="text-[11px] text-slate-600 dark:text-slate-400">
+                  Один return в конце функции. Никаких досрочных выходов!
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
-                <h4 className="font-bold text-indigo-300 flex items-center gap-1.5">
-                  <Sparkles size={14} /> Форматирование Clang-Format
-                </h4>
-                <div className="font-mono bg-slate-900 p-2.5 rounded-xl text-slate-300 text-[11px]">
-                  clang-format -n src/*.c  # проверка<br />
-                  clang-format -i src/*.c  # исправление
-                </div>
-                <p className="text-slate-400 text-[11px]">
-                  Файл .clang-format должен лежать в папке src/.
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="font-semibold text-rose-600 dark:text-rose-400 block">Запрещено:</span>
+                <p className="text-[11px] text-slate-600 dark:text-slate-400">
+                  Глобальные переменные, goto, бинарники в Git.
                 </p>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
-                <h4 className="font-bold text-emerald-300">
-                  Принцип Дейкстры: Single Exit Point
-                </h4>
-                <p className="text-slate-400">
-                  Каждая функция должна иметь ровно один <code>return</code> в самом конце. Никаких досрочных выходов по середине функции!
-                </p>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
-                <h4 className="font-bold text-rose-300">
-                  Строгие запреты проектов
-                </h4>
-                <ul className="list-disc list-inside space-y-1 text-slate-400">
-                  <li>Запрещены глобальные переменные</li>
-                  <li>Запрещен оператор <code>goto</code></li>
-                  <li>Запрещены динамическая память и массивы (в D03)</li>
-                  <li>Запрещены сторонние библиотеки кроме stdio.h и math.h</li>
-                </ul>
               </div>
             </div>
           </div>
