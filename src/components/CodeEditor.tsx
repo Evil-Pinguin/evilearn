@@ -17,6 +17,8 @@ interface CodeEditorProps {
   onNext?: () => void;
   /** Enter работает как «перейти дальше», а не «новая строка» (для однострочных полей) */
   enterGoesNext?: boolean;
+  /** Id поля для перехода «к следующему вводу» (Alt+Enter) */
+  inputNavId?: string;
   autoFocus?: boolean;
   ariaLabel?: string;
 }
@@ -26,7 +28,7 @@ const INDENT = '    ';
 /**
  * Простой редактор с «правильным» Enter:
  *  - Enter  -> новая строка с сохранением/наращиванием отступа;
- *  - Tab    -> 4 пробела (или отступ выделенных строк);
+ *  - Tab    -> отступ (4 пробела в коде, 2 в командах; или сдвиг выделенных строк);
  *  - { / ( / " -> автопара;
  *  - Ctrl+Enter -> проверка, Alt+Enter -> следующее поле.
  */
@@ -43,7 +45,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   onNext,
   enterGoesNext = false,
   autoFocus,
-  ariaLabel
+  ariaLabel,
+  inputNavId
 }) => {
   const ref = useRef<HTMLTextAreaElement | null>(null);
   const [focused, setFocused] = useState(false);
@@ -203,6 +206,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           <textarea
             ref={ref}
             id={id}
+            data-exercise-input={inputNavId}
             aria-label={ariaLabel}
             value={value}
             rows={rows}

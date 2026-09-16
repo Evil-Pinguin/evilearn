@@ -23,7 +23,9 @@ interface ExerciseCardProps {
 
 /** Переход к следующему полю ввода на уроке (Alt+Enter / кнопка «Дальше»). */
 export function focusNextExerciseInput(currentId: string) {
-  const nodes = Array.from(document.querySelectorAll<HTMLTextAreaElement>('[data-exercise-input]'));
+  const nodes = Array.from(
+    document.querySelectorAll<HTMLTextAreaElement>('textarea[data-exercise-input]')
+  );
   const idx = nodes.findIndex(n => n.dataset.exerciseInput === currentId);
   if (idx >= 0 && idx + 1 < nodes.length) {
     const next = nodes[idx + 1];
@@ -132,6 +134,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, index }) =
 
         <CodeEditor
           id={`input-${exercise.id}`}
+          inputNavId={exercise.id}
           value={userCode}
           onChange={handleChange}
           language={exercise.taskType === 'c_code' ? 'c' : 'bash'}
@@ -145,8 +148,6 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, index }) =
           onCheck={runCheck}
           onNext={() => focusNextExerciseInput(exercise.id)}
         />
-
-        <div data-exercise-input={exercise.id} className="hidden" aria-hidden />
 
         <div className="flex flex-wrap items-center gap-2">
           <button
