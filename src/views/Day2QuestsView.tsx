@@ -22,9 +22,9 @@ export const Day2QuestsView: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 pb-16">
+    <div className="max-w-4xl mx-auto space-y-4 pb-16">
       {/* Header */}
-      <div className="p-4 sm:p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-1 shadow-sm">
+      <div className="p-4 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-1">
         <div className="flex items-center justify-between">
           <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <ShieldCheck size={20} className="text-emerald-500" />
@@ -47,7 +47,7 @@ export const Day2QuestsView: React.FC = () => {
             <button
               key={quest.id}
               onClick={() => setSelectedQuestId(quest.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-colors whitespace-nowrap flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-md text-xs font-mono transition-colors whitespace-nowrap flex items-center gap-1.5 ${
                 isSelected
                   ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-semibold'
                   : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-50'
@@ -64,7 +64,7 @@ export const Day2QuestsView: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
         {/* Code View */}
         <div className="md:col-span-7 space-y-4">
-          <div className="p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
+          <div className="p-5 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-slate-100">
                 {currentQuest.title}
@@ -82,13 +82,13 @@ export const Day2QuestsView: React.FC = () => {
           </div>
 
           {/* Line by line */}
-          <div className="p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
+          <div className="p-5 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3">
             <h4 className="font-semibold text-xs text-slate-900 dark:text-slate-100">
               Построчный разбор логики:
             </h4>
             <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
               {currentQuest.lineByLine.map((item, idx) => (
-                <div key={idx} className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-0.5">
+                <div key={idx} className="p-2.5 rounded-md bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-0.5">
                   <div className="flex items-center justify-between text-[11px] font-mono">
                     <span className="font-bold text-slate-700 dark:text-slate-300">Строка {item.line}</span>
                     <span className="text-slate-400 text-[10px]">{item.concept}</span>
@@ -102,14 +102,14 @@ export const Day2QuestsView: React.FC = () => {
 
         {/* Peer Review Questions */}
         <div className="md:col-span-5 space-y-4">
-          <div className="p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
+          <div className="p-5 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3">
             <h4 className="font-semibold text-xs text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
-              <Users size={14} className="text-indigo-500" />
+              <Users size={14} className="text-slate-500" />
               Вопросы пира на проверке:
             </h4>
             <div className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
               {currentQuest.peerReviewQuestions.map((q, idx) => (
-                <div key={idx} className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                <div key={idx} className="p-2.5 rounded-md bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                   <span className="font-semibold text-slate-700 dark:text-slate-300 block mb-0.5">Вопрос {idx + 1}:</span>
                   <p>{q}</p>
                 </div>
@@ -117,7 +117,7 @@ export const Day2QuestsView: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-2 shadow-sm">
+          <div className="p-5 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-2">
             <h4 className="font-semibold text-xs text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
               <Lightbulb size={14} className="text-amber-500" />
               Инсайты:
@@ -135,7 +135,7 @@ export const Day2QuestsView: React.FC = () => {
       </div>
 
       {/* Day 3 Notice: Решаю сама */}
-      <div className="p-5 rounded-2xl border bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/40 space-y-3">
+      <div className="p-5 rounded-lg border bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/40 space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-xs sm:text-sm text-amber-900 dark:text-amber-200">
             Квесты Дня 3 (D03T03): Решаю сама 💪
@@ -146,7 +146,7 @@ export const Day2QuestsView: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
           {day3QuestsList.map((q, idx) => (
-            <div key={idx} className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-amber-200/60 dark:border-slate-800">
+            <div key={idx} className="p-2.5 rounded-md bg-white dark:bg-slate-900 border border-amber-200/60 dark:border-slate-800">
               <span className="font-mono font-bold text-slate-900 dark:text-slate-100 block">{q.name}</span>
               <span className="text-[11px] text-slate-500">{q.title} ({q.prep})</span>
             </div>

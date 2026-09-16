@@ -1,6 +1,7 @@
 import React from 'react';
 import { modulesData, lessonsData } from '../data/lessonsData';
 import { useProgress } from '../context/ProgressContext';
+import { ViewId } from '../types';
 import { PomodoroTimer } from '../components/PomodoroTimer';
 import { 
   CheckCircle2, 
@@ -14,12 +15,14 @@ import {
   Layers, 
   Calculator, 
   ShieldCheck,
-  Star
+  Star,
+  BookOpen,
+  Heart
 } from 'lucide-react';
 
 interface HomeViewProps {
   onSelectLesson: (lessonId: string) => void;
-  onNavigate: (view: 'exam' | 'flashcards' | 'math' | 'tools' | 'day2') => void;
+  onNavigate: (view: ViewId) => void;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }) => {
@@ -29,13 +32,13 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }
   return (
     <div className="space-y-8 pb-16">
       {/* 1. Clean Path Summary Header */}
-      <div className="p-5 sm:p-6 rounded-lg border bg-white dark:bg-slate-800/40 border-slate-200 dark:border-slate-700 space-y-4">
+      <div className="p-4 rounded-lg border bg-white dark:bg-slate-800/40 border-slate-200 dark:border-slate-700 space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="space-y-0.5">
             <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
               Школа 21 • er-d9 • breashee
             </span>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+            <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
               Путь в C: Программа закрепления
             </h1>
           </div>
@@ -43,14 +46,14 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }
           <div className="flex items-center gap-2">
             <button
               onClick={() => onNavigate('exam')}
-              className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm"
+              className="px-3.5 py-1.5 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-colors flex items-center gap-1.5"
             >
               <Timer size={14} />
               <span>Экзамен (10 задач)</span>
             </button>
             <button
               onClick={() => onNavigate('day2')}
-              className="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-medium transition-colors"
+              className="px-3.5 py-1.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-medium transition-colors"
             >
               Квесты Дня 2
             </button>
@@ -59,7 +62,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }
 
         {/* 3 Steps Overview */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-          <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+          <div className="p-3 rounded-md bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-slate-700 dark:text-slate-300">1. Дни 1–2</span>
               <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">Сдано ✅</span>
@@ -79,7 +82,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }
             </p>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+          <div className="p-3 rounded-md bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-slate-700 dark:text-slate-300">3. Экзамен</span>
               <span className="text-[10px] text-slate-500 font-mono">10 задач 🎯</span>
@@ -107,22 +110,33 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }
         </div>
       </div>
 
-      {/* Quick Access Tools Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {/* Быстрые вкладки */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
         <button
-          onClick={() => onNavigate('flashcards')}
-          className="p-3 rounded-xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-left transition-colors"
+          onClick={() => onNavigate('commands')}
+          className="p-3 rounded-md border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-emerald-400 dark:hover:border-emerald-600 text-left"
         >
           <div className="flex items-center gap-2 mb-1">
-            <Layers size={14} className="text-indigo-500" />
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Словарь</span>
+            <BookOpen size={14} className="text-emerald-500" />
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Команды</span>
           </div>
-          <p className="text-[11px] text-slate-500">60 карточек команд и правил</p>
+          <p className="text-[11px] text-slate-500">полные цепочки по квестам</p>
+        </button>
+        <button
+          onClick={() => onNavigate('flashcards')}
+          className="p-3 rounded-md border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-700 text-left"
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <Layers size={14} className="text-slate-500" />
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Словарь</span>
+            <Heart size={11} className="text-rose-400 fill-rose-400" />
+          </div>
+          <p className="text-[11px] text-slate-500">карточки + свайп-режим</p>
         </button>
 
         <button
           onClick={() => onNavigate('math')}
-          className="p-3 rounded-xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-left transition-colors"
+          className="p-3 rounded-md border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-emerald-400 dark:hover:border-emerald-600 text-left"
         >
           <div className="flex items-center gap-2 mb-1">
             <Calculator size={14} className="text-amber-500" />
@@ -133,7 +147,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }
 
         <button
           onClick={() => onNavigate('day2')}
-          className="p-3 rounded-xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-left transition-colors"
+          className="p-3 rounded-md border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-emerald-400 dark:hover:border-emerald-600 text-left"
         >
           <div className="flex items-center gap-2 mb-1">
             <ShieldCheck size={14} className="text-emerald-500" />
@@ -144,10 +158,10 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }
 
         <button
           onClick={() => onNavigate('tools')}
-          className="p-3 rounded-xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-left transition-colors"
+          className="p-3 rounded-md border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-emerald-400 dark:hover:border-emerald-600 text-left"
         >
           <div className="flex items-center gap-2 mb-1">
-            <Terminal size={14} className="text-teal-500" />
+            <Terminal size={14} className="text-slate-500" />
             <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Песочница</span>
           </div>
           <p className="text-[11px] text-slate-500">Консоль er-d9 и утилиты</p>
@@ -155,7 +169,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }
       </div>
 
       {/* 4 Modules & 12 Lessons */}
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
             Уроки (4 модуля)
@@ -170,7 +184,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }
             return (
               <div 
                 key={module.id}
-                className="rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm"
+                className="rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 overflow-hidden"
               >
                 {/* Module Header */}
                 <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-950/40">

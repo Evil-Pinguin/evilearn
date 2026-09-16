@@ -62,7 +62,7 @@ export const VirtualTerminal: React.FC = () => {
   };
 
   return (
-    <div className="my-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-950 overflow-hidden shadow-sm">
+    <div className="my-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-950 overflow-hidden">
       {/* Title Bar */}
       <div className="flex items-center justify-between px-3.5 py-2 bg-slate-900 border-b border-slate-800 text-xs font-mono text-slate-400">
         <span className="flex items-center gap-1.5 text-slate-300">

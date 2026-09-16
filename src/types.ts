@@ -1,3 +1,14 @@
+/** Все вкладки приложения. */
+export type ViewId =
+  | 'home'
+  | 'lesson'
+  | 'exam'
+  | 'flashcards'
+  | 'math'
+  | 'tools'
+  | 'day2'
+  | 'commands';
+
 export interface Exercise {
   id: string;
   title: string;
@@ -6,6 +17,8 @@ export interface Exercise {
   initialCode?: string;
   placeholder?: string;
   expectedOutput?: string;
+  /** Что обязательно должно появиться в коде (для живой подсветки). */
+  requiredParts?: { label: string; anyOf: string[] }[];
   testCases?: {
     input: string;
     expectedOutput: string;
@@ -21,6 +34,8 @@ export interface QuizQuestion {
   id: string;
   question: string;
   codeSnippet?: string;
+  /** Направление мысли без самого ответа — показывается по кнопке «Подсказка». */
+  hint?: string;
   options: {
     id: string;
     text: string;
@@ -96,6 +111,11 @@ export interface ExamQuestion {
   starterCode?: string;
   options?: string[];
   correctAnswer?: string | number;
+  /** Обязательные элементы ответа (для мгновенной подсветки и единого градинга). */
+  requiredParts?: { label: string; anyOf: string[] }[];
+  /** Приёмы, которые условие запрещает (например \n в конце вывода). */
+  forbiddenParts?: { label: string; anyOf: string[] }[];
+  referenceSolution?: string;
   sampleInput?: string;
   expectedOutputSample?: string;
   testCases?: {
@@ -159,6 +179,30 @@ export interface UserProgress {
     timeSpentSeconds: number;
     answers: { [questionId: number]: string };
   }[];
+  swipeStats: SwipeStats;
   xp: number;
   streakDays: number;
+}
+
+export interface CommandStep {
+  command: string;
+  what: string;
+  note?: string;
+}
+
+export interface CommandCheat {
+  id: string;
+  title: string;
+  goal: string;
+  emoji: string;
+  /** Урок, к которому относится шпаргалка (для перехода в тренажёр) */
+  lessonId?: string;
+  steps: CommandStep[];
+  pitfalls?: string[];
+}
+
+export interface SwipeStats {
+  correct: number;
+  wrong: number;
+  bestStreak: number;
 }

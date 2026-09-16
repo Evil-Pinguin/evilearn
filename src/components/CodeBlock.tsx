@@ -25,7 +25,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   const lines = code.trim().split('\n');
 
   return (
-    <div className="my-2.5 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 shadow-sm">
+    <div className="my-2.5 rounded-md overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100">
       {title && (
         <div className="flex items-center justify-between px-3.5 py-1.5 bg-slate-950 border-b border-slate-800 text-xs font-mono text-slate-400">
           <span className="font-medium text-slate-300">{title}</span>

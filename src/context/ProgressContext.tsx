@@ -10,6 +10,7 @@ interface ProgressContextType {
   toggleFlashcardKnown: (cardId: string) => void;
   recordMathDrillSuccess: (num: number) => void;
   saveExamResult: (score: number, maxScore: number, answers: { [key: number]: string }, timeSpentSeconds: number) => void;
+  recordSwipeResult: (correct: boolean, cardId: string, currentStreak?: number) => void;
   resetProgress: () => void;
   isLessonCompleted: (lessonId: string) => boolean;
   getModuleProgress: (moduleId: string) => { completed: number; total: number; percentage: number };
@@ -30,6 +31,7 @@ const defaultProgress: UserProgress = {
     score: 0
   },
   examAttempts: [],
+  swipeStats: { correct: 0, wrong: 0, bestStreak: 0 },
   xp: 150, // Starting bonus for student breashee
   streakDays: 3
 };
@@ -41,7 +43,14 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        return JSON.parse(saved);
+        // Мержим со дефолтами: старые версии прогресса могут не иметь новых полей
+        const parsed = JSON.parse(saved);
+        return {
+          ...defaultProgress,
+          ...parsed,
+          swipeStats: { ...defaultProgress.swipeStats, ...(parsed.swipeStats || {}) },
+          mathDrillProgress: { ...defaultProgress.mathDrillProgress, ...(parsed.mathDrillProgress || {}) }
+        };
       }
     } catch (e) {
       console.error('Failed to load progress from localStorage', e);
@@ -187,6 +196,29 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   };
 
+  /**
+   * Итог одного свайпа в режиме «знакомств».
+   * currentStreak — серия правильных ответов подряд (ведёт компонент).
+   */
+  const recordSwipeResult = (correct: boolean, cardId: string, currentStreak = 0) => {
+    setProgress(prev => {
+      const stats = prev.swipeStats || { correct: 0, wrong: 0, bestStreak: 0 };
+      return {
+        ...prev,
+        swipeStats: {
+          correct: stats.correct + (correct ? 1 : 0),
+          wrong: stats.wrong + (correct ? 0 : 1),
+          bestStreak: Math.max(stats.bestStreak, currentStreak)
+        },
+        // Правильно угаданная карточка — шаг к «освоено», ошибка — сброс в «изучаю»
+        flashcardStatus: correct
+          ? { ...prev.flashcardStatus, [cardId]: prev.flashcardStatus[cardId] === 'known' ? 'known' : 'learning' }
+          : { ...prev.flashcardStatus, [cardId]: 'learning' },
+        xp: prev.xp + (correct ? 5 : 0)
+      };
+    });
+  };
+
   const saveExamResult = (score: number, maxScore: number, answers: { [key: number]: string }, timeSpentSeconds: number) => {
     const passed = (score / maxScore) >= 0.75;
     const newAttempt = {
@@ -264,6 +296,7 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         toggleFlashcardKnown,
         recordMathDrillSuccess,
         saveExamResult,
+        recordSwipeResult,
         resetProgress,
         isLessonCompleted,
         getModuleProgress,
