@@ -43,7 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   ] as const;
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-md border-b bg-white/90 dark:bg-slate-950/90 border-slate-200 dark:border-slate-800 transition-colors">
+    <header className="sticky top-0 z-40 w-full border-b bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
@@ -51,7 +51,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => { setCurrentView('home'); setMobileMenuOpen(false); }}
             className="flex items-center gap-2.5 cursor-pointer select-none"
           >
-            <div className="w-8 h-8 rounded-lg bg-emerald-600 dark:bg-emerald-500 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+            <div className="w-8 h-8 rounded-md bg-emerald-600 text-white flex items-center justify-center text-sm">
               🐧
             </div>
             <div>

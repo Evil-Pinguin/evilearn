@@ -29,7 +29,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }
   return (
     <div className="space-y-8 pb-16">
       {/* 1. Clean Path Summary Header */}
-      <div className="p-5 sm:p-7 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
+      <div className="p-5 sm:p-6 rounded-lg border bg-white dark:bg-slate-800/40 border-slate-200 dark:border-slate-700 space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="space-y-0.5">
             <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
@@ -69,10 +69,10 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectLesson, onNavigate }
             </p>
           </div>
 
-          <div className="p-3 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 space-y-1">
+          <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-amber-800 dark:text-amber-300">2. День 3 (D03)</span>
-              <span className="text-[10px] text-amber-700 dark:text-amber-400 font-bold">Решаю сама 💪</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-300">2. День 3 (D03)</span>
+              <span className="text-[10px] text-slate-500 font-bold">Решаю сама</span>
             </div>
             <p className="text-[11px] text-slate-600 dark:text-slate-400">
               Уроки 7, 9, 10, 11, 12 как подготовка.
