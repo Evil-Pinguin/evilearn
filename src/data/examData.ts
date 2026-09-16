@@ -3,6 +3,15 @@ import { ExamQuestion } from '../types';
 export const examQuestionsData: ExamQuestion[] = [
   {
     id: 1,
+    requiredParts: [
+      { label: 'int main', anyOf: ['main'] },
+      { label: '#include <stdio.h>', anyOf: ['#include <stdio.h>', '#include<stdio.h>'] },
+      { label: 'printf / puts', anyOf: ['printf', 'puts'] },
+      { label: 'строка "I am ready!"', anyOf: ['i am ready!'] },
+      { label: 'return 0;', anyOf: ['return'] }
+    ],
+    forbiddenParts: [{ label: 'перевод строки \\n в конце вывода (автотест сверяет посимвольно)', anyOf: ['\\n'] }],
+    referenceSolution: '#include <stdio.h>\n\nint main(void) {\n    printf("I am ready!");\n    return 0;\n}',
     title: 'Задача 1: Печать строки готовности',
     category: 'Основы C',
     type: 'code',
@@ -24,6 +33,14 @@ int main(void) {
   },
   {
     id: 2,
+    requiredParts: [
+      { label: 'int main', anyOf: ['main'] },
+      { label: 'scanf для чтения числа', anyOf: ['scanf'] },
+      { label: 'ловушка extra / n/a', anyOf: ['extra', 'tail_is_clean', 'n/a'] },
+      { label: 'умножение n * n', anyOf: ['n * n', '* n', 'pow'] },
+      { label: 'печать через printf', anyOf: ['printf'] }
+    ],
+    referenceSolution: '#include <stdio.h>\n\nint main(void) {\n    int n;\n    char extra;\n\n    if (scanf("%d %c", &n, &extra) != 1) {\n        printf("n/a");\n        return 0;\n    }\n    printf("%d", n * n);\n    return 0;\n}',
     title: 'Задача 2: Квадрат числа с валидацией',
     category: 'Валидация ввода',
     type: 'code',
@@ -51,6 +68,15 @@ int main(void) {
   },
   {
     id: 3,
+    requiredParts: [
+      { label: 'своя функция min', anyOf: ['min_of_two', 'int min', 'min('] },
+      { label: 'вызов функции из main', anyOf: ['min'] },
+      { label: 'сравнение чисел', anyOf: ['<', '>', '?'] },
+      { label: 'scanf с ловушкой', anyOf: ['scanf'] },
+      { label: 'printf результата', anyOf: ['printf'] },
+      { label: 'int main', anyOf: ['main'] }
+    ],
+    referenceSolution: '#include <stdio.h>\n\nint min_of_two(int a, int b) {\n    return (a < b) ? a : b;\n}\n\nint main(void) {\n    int a, b;\n    char extra;\n\n    if (scanf("%d %d %c", &a, &b, &extra) != 2) {\n        printf("n/a");\n        return 0;\n    }\n    printf("%d", min_of_two(a, b));\n    return 0;\n}',
     title: 'Задача 3: Меньшее из двух (функция обязательна)',
     category: 'Функции',
     type: 'code',
@@ -78,6 +104,15 @@ int main(void) {
   },
   {
     id: 4,
+    requiredParts: [
+      { label: 'цикл (for или while)', anyOf: ['for', 'while'] },
+      { label: 'накопление суммы', anyOf: ['+=', 'sum =', 'sum +='] },
+      { label: 'шаг 2 или проверка чётности', anyOf: ['+= 2', '% 2', '%2'] },
+      { label: 'scanf с ловушкой', anyOf: ['scanf'] },
+      { label: 'printf результата', anyOf: ['printf'] },
+      { label: 'int main', anyOf: ['main'] }
+    ],
+    referenceSolution: '#include <stdio.h>\n\nint main(void) {\n    int n;\n    char extra;\n\n    if (scanf("%d %c", &n, &extra) != 1) {\n        printf("n/a");\n        return 0;\n    }\n    int sum = 0;\n    for (int i = 2; i <= n; i += 2) {\n        sum += i;\n    }\n    printf("%d", sum);\n    return 0;\n}',
     title: 'Задача 4: Сумма чётных чисел от 1 до N',
     category: 'Циклы',
     type: 'code',
@@ -105,6 +140,16 @@ int main(void) {
   },
   {
     id: 5,
+    requiredParts: [
+      { label: 'double + %lf в scanf', anyOf: ['%lf'] },
+      { label: 'тип double', anyOf: ['double'] },
+      { label: 'формула площади (r * r)', anyOf: ['r * r', 'r*r', 'pow(r'] },
+      { label: 'число пи', anyOf: ['3.14159265358979', '3.14159', 'm_pi', 'acos(-1)'] },
+      { label: 'печать с 3 знаками %.3f', anyOf: ['%.3f'] },
+      { label: 'printf результата', anyOf: ['printf'] },
+      { label: 'int main', anyOf: ['main'] }
+    ],
+    referenceSolution: '#include <stdio.h>\n\nint main(void) {\n    double r;\n    char extra;\n\n    if (scanf("%lf %c", &r, &extra) != 1 || r < 0) {\n        printf("n/a");\n        return 0;\n    }\n    printf("%.3f", 3.14159265358979 * r * r);\n    return 0;\n}',
     title: 'Задача 5: Площадь круга с 3 знаками',
     category: 'math.h & double',
     type: 'code',
@@ -131,6 +176,15 @@ int main(void) {
   },
   {
     id: 6,
+    requiredParts: [
+      { label: 'ветка LETTER', anyOf: ['letter', 'isalpha'] },
+      { label: 'ветка DIGIT', anyOf: ['digit', 'isdigit'] },
+      { label: 'ветка OTHER', anyOf: ['other', 'else'] },
+      { label: 'чтение символа', anyOf: ['scanf', 'getchar'] },
+      { label: 'printf', anyOf: ['printf'] },
+      { label: 'int main', anyOf: ['main'] }
+    ],
+    referenceSolution: "#include <stdio.h>\n\nint main(void) {\n    int c = getchar();\n\n    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {\n        printf(\"LETTER\");\n    } else if (c >= '0' && c <= '9') {\n        printf(\"DIGIT\");\n    } else {\n        printf(\"OTHER\");\n    }\n    return 0;\n}",
     title: 'Задача 6: Классификатор символов',
     category: 'char & ASCII',
     type: 'code',
@@ -159,6 +213,15 @@ int main(void) {
   },
   {
     id: 7,
+    requiredParts: [
+      { label: 'цикл while', anyOf: ['while', 'for'] },
+      { label: 'уменьшение вычитанием или %', anyOf: ['-=', '%'] },
+      { label: 'условие a != b', anyOf: ['!=', '<'] },
+      { label: 'scanf двух чисел', anyOf: ['scanf'] },
+      { label: 'printf результата', anyOf: ['printf'] },
+      { label: 'int main', anyOf: ['main'] }
+    ],
+    referenceSolution: '#include <stdio.h>\n\nint main(void) {\n    int a, b;\n    char extra;\n\n    if (scanf("%d %d %c", &a, &b, &extra) != 2 || a <= 0 || b <= 0) {\n        printf("n/a");\n        return 0;\n    }\n    while (a != b) {\n        if (a > b) {\n            a -= b;\n        } else {\n            b -= a;\n        }\n    }\n    printf("%d", a);\n    return 0;\n}',
     title: 'Задача 7: НОД двух чисел (Алгоритм Евклида)',
     category: 'Алгоритмы',
     type: 'code',
@@ -189,6 +252,15 @@ int main(void) {
   },
   {
     id: 8,
+    requiredParts: [
+      { label: 'цикл for', anyOf: ['for'] },
+      { label: 'граница 10', anyOf: ['10'] },
+      { label: 'разделитель " | "', anyOf: ['|'] },
+      { label: 'печать %d', anyOf: ['%d'] },
+      { label: 'printf', anyOf: ['printf'] },
+      { label: 'int main', anyOf: ['main'] }
+    ],
+    referenceSolution: '#include <stdio.h>\n\nint main(void) {\n    for (int i = 1; i <= 10; i++) {\n        printf("%d | %d | %d\\n", i, i * i, i * i * i);\n    }\n    return 0;\n}',
     title: 'Задача 8: Таблица квадратов и кубов',
     category: 'Форматный вывод',
     type: 'code',
@@ -211,6 +283,15 @@ int main(void) {
   },
   {
     id: 9,
+    requiredParts: [
+      { label: 'функция factorial()', anyOf: ['factorial'] },
+      { label: 'базовый случай (return 1)', anyOf: ['if', 'n <= 1', 'n < 2', '?'] },
+      { label: 'рекурсивный вызов с n - 1', anyOf: ['n - 1', 'n-1'] },
+      { label: 'умножение', anyOf: ['*'] },
+      { label: 'scanf с ловушкой', anyOf: ['scanf'] },
+      { label: 'int main', anyOf: ['main'] }
+    ],
+    referenceSolution: '#include <stdio.h>\n\nint factorial(int n) {\n    if (n <= 1) {\n        return 1;\n    }\n    return n * factorial(n - 1);\n}\n\nint main(void) {\n    int n;\n    char extra;\n\n    if (scanf("%d %c", &n, &extra) != 1 || n < 0 || n > 12) {\n        printf("n/a");\n        return 0;\n    }\n    printf("%d", factorial(n));\n    return 0;\n}',
     title: 'Задача 9: Рекурсивный факториал',
     category: 'Рекурсия',
     type: 'code',
@@ -244,6 +325,16 @@ int main(void) {
   },
   {
     id: 10,
+    requiredParts: [
+      { label: 'цикл перебора делителей', anyOf: ['for', 'while'] },
+      { label: 'остаток от деления n % d', anyOf: ['%'] },
+      { label: 'сравнение с нулём', anyOf: ['== 0', '!= 0'] },
+      { label: 'выход из цикла', anyOf: ['break', 'return', 'else'] },
+      { label: 'scanf с ловушкой', anyOf: ['scanf'] },
+      { label: 'printf результата', anyOf: ['printf'] },
+      { label: 'int main', anyOf: ['main'] }
+    ],
+    referenceSolution: '#include <stdio.h>\n\nint main(void) {\n    int n;\n    char extra;\n\n    if (scanf("%d %c", &n, &extra) != 1 || n <= 1) {\n        printf("n/a");\n        return 0;\n    }\n    for (int d = n / 2; d >= 1; d--) {\n        if (n % d == 0) {\n            printf("%d", d);\n            break;\n        }\n    }\n    return 0;\n}',
     title: 'Задача 10: Наибольший собственный делитель числа',
     category: 'Алгоритмы делимости',
     type: 'code',

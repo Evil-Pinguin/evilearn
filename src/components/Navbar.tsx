@@ -1,146 +1,102 @@
 import React, { useState } from 'react';
 import { useProgress } from '../context/ProgressContext';
 import { useTheme } from '../context/ThemeContext';
-import { 
-  Terminal, 
-  Map, 
-  Timer, 
-  Layers, 
-  Calculator, 
-  Wrench, 
-  Flame, 
-  Sparkles, 
-  Menu, 
-  X, 
-  RotateCcw,
-  ShieldCheck,
-  Sun,
-  Moon
-} from 'lucide-react';
+import { ViewId } from '../types';
+import { Map, ShieldCheck, Timer, Layers, Calculator, Wrench, Flame, BookOpen, Menu, X, RotateCcw, Sun, Moon } from 'lucide-react';
 
 interface NavbarProps {
-  currentView: 'home' | 'lesson' | 'exam' | 'flashcards' | 'math' | 'tools' | 'day2';
-  setCurrentView: (view: 'home' | 'lesson' | 'exam' | 'flashcards' | 'math' | 'tools' | 'day2') => void;
+  currentView: ViewId;
+  setCurrentView: (view: ViewId) => void;
   selectedLessonId: string | null;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({
-  currentView,
-  setCurrentView,
-}) => {
+const NAV_ITEMS: { id: ViewId; label: string; icon: React.ElementType }[] = [
+  { id: 'home', label: 'Уроки', icon: Map },
+  { id: 'commands', label: 'Команды', icon: BookOpen },
+  { id: 'day2', label: 'Квесты Дня 2', icon: ShieldCheck },
+  { id: 'flashcards', label: 'Словарь', icon: Layers },
+  { id: 'exam', label: 'Экзамен', icon: Timer },
+  { id: 'math', label: 'Кирпичики', icon: Calculator },
+  { id: 'tools', label: 'Песочница', icon: Wrench }
+];
+
+export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) => {
   const { progress, getTotalProgress, resetProgress } = useProgress();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const totalStats = getTotalProgress();
 
-  const navItems = [
-    { id: 'home', label: 'Уроки', icon: Map },
-    { id: 'day2', label: 'Квесты Дня 2', icon: ShieldCheck },
-    { id: 'exam', label: 'Экзамен', icon: Timer },
-    { id: 'flashcards', label: 'Словарь', icon: Layers },
-    { id: 'math', label: 'Кирпичики', icon: Calculator },
-    { id: 'tools', label: 'Песочница', icon: Wrench }
-  ] as const;
-
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14">
-          {/* Logo */}
-          <div 
-            onClick={() => { setCurrentView('home'); setMobileMenuOpen(false); }}
-            className="flex items-center gap-2.5 cursor-pointer select-none"
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-12 gap-3">
+          {/* Логотип */}
+          <button
+            onClick={() => {
+              setCurrentView('home');
+              setMobileMenuOpen(false);
+            }}
+            className="flex items-center gap-2 shrink-0"
           >
-            <div className="w-8 h-8 rounded-md bg-emerald-600 text-white flex items-center justify-center text-sm">
-              🐧
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-bold text-sm tracking-tight text-slate-900 dark:text-white">
-                  Путь в C
-                </span>
-                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium">
-                  Школа 21
-                </span>
-              </div>
-            </div>
-          </div>
+            <span className="text-base leading-none">🐧</span>
+            <span className="font-bold text-sm tracking-tight text-slate-900 dark:text-white">Путь в C</span>
+            <span className="hidden sm:inline text-[10px] font-mono px-1 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">
+              21
+            </span>
+          </button>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
-            {navItems.map(item => {
+          {/* Меню */}
+          <nav className="hidden lg:flex items-center gap-0.5">
+            {NAV_ITEMS.map(item => {
               const Icon = item.icon;
               const isActive = currentView === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => setCurrentView(item.id)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs transition-colors ${
                     isActive
                       ? 'bg-slate-100 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 font-semibold'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-900'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
-                  <Icon size={14} className={isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'} />
+                  <Icon size={13} />
                   <span>{item.label}</span>
                 </button>
               );
             })}
           </nav>
 
-          {/* Right Controls: Stats + Theme Switcher */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Streak */}
-            <div 
-              title="Серия активности: 3 дня"
-              className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/40 text-amber-700 dark:text-amber-300 text-xs font-mono font-medium"
-            >
-              <Flame size={13} className="text-amber-500 fill-amber-500" />
-              <span>{progress.streakDays} дн.</span>
-            </div>
+          {/* Справа */}
+          <div className="flex items-center gap-2">
+            <span className="hidden md:flex items-center gap-1 text-[11px] font-mono text-slate-500" title="Серия дней">
+              <Flame size={12} className="text-amber-500" /> {progress.streakDays}
+            </span>
+            <span className="hidden md:flex items-center gap-1 text-[11px] font-mono text-emerald-600 dark:text-emerald-400" title="XP">
+              {progress.xp} XP
+            </span>
+            <span className="hidden sm:flex items-center text-[11px] font-mono text-slate-500" title="Пройдено уроков">
+              {totalStats.completedLessons}/{totalStats.totalLessons}
+            </span>
 
-            {/* XP */}
-            <div 
-              title="Очки опыта"
-              className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 text-emerald-700 dark:text-emerald-300 text-xs font-mono font-medium"
-            >
-              <Sparkles size={13} className="text-emerald-500" />
-              <span>{progress.xp} XP</span>
-            </div>
-
-            {/* Progress Pill */}
-            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-mono text-slate-600 dark:text-slate-400">
-              <span>{totalStats.completedLessons}/{totalStats.totalLessons}</span>
-              <span className="font-semibold text-emerald-600 dark:text-emerald-400">({totalStats.percentage}%)</span>
-            </div>
-
-            {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
-              className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-colors"
-              title={theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'}
-              aria-label="Переключить тему"
+              title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
+              className="p-1.5 rounded-md text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
-              {theme === 'dark' ? (
-                <Sun size={15} className="text-amber-400" />
-              ) : (
-                <Moon size={15} className="text-slate-700" />
-              )}
+              {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
             </button>
-
-            {/* Reset */}
             <button
               onClick={resetProgress}
               title="Сбросить прогресс"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="hidden sm:block p-1.5 rounded-md text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
-              <RotateCcw size={14} />
+              <RotateCcw size={13} />
             </button>
-
-            {/* Mobile Menu Toggle */}
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
+              onClick={() => setMobileMenuOpen(v => !v)}
+              className="lg:hidden p-1.5 rounded-md text-slate-600 dark:text-slate-300"
+              aria-label="Меню"
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
@@ -148,10 +104,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Мобильное меню */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-b bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 px-4 pt-2 pb-4 space-y-1">
-          {navItems.map(item => {
+        <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 px-4 py-2 space-y-0.5">
+          {NAV_ITEMS.map(item => {
             const Icon = item.icon;
             const isActive = currentView === item.id;
             return (
@@ -161,20 +117,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                   setCurrentView(item.id);
                   setMobileMenuOpen(false);
                 }}
-                className={`w-full flex items-center gap-2.5 p-2 rounded-lg text-xs font-medium ${
+                className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs ${
                   isActive
-                    ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 font-semibold'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900'
+                    ? 'bg-slate-100 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 font-semibold'
+                    : 'text-slate-600 dark:text-slate-400'
                 }`}
               >
-                <Icon size={16} />
+                <Icon size={14} />
                 <span>{item.label}</span>
               </button>
             );
           })}
-
-          <div className="pt-2 mt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 font-mono">
-            <span>Прогресс: {totalStats.completedLessons}/12 уроков</span>
+          <div className="flex items-center justify-between px-2 py-1 text-[11px] font-mono text-slate-500">
+            <span>уроки {totalStats.completedLessons}/{totalStats.totalLessons}</span>
             <span>{progress.xp} XP</span>
           </div>
         </div>

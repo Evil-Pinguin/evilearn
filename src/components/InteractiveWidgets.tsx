@@ -86,7 +86,7 @@ export const PrimeFactorWidget: React.FC = () => {
   const sampleNumbers = [91, 100, 32, 49, 98, 75, 55, 45, 9, 25, 77, 97];
 
   return (
-    <div className="my-5 p-4 sm:p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
+    <div className="my-5 p-4 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Calculator className="text-emerald-600 dark:text-emerald-400" size={18} />
@@ -125,25 +125,25 @@ export const PrimeFactorWidget: React.FC = () => {
             setNumInput(val);
             factorize(val);
           }}
-          className="w-32 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 font-mono text-sm font-bold text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500"
+          className="w-32 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-md px-3 py-1.5 font-mono text-sm font-bold text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500"
         />
         <button
           onClick={() => factorize(numInput)}
-          className="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-semibold"
+          className="px-3 py-1.5 rounded-md bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-semibold"
         >
           Разложить
         </button>
       </div>
 
       {calculated.isTrap && (
-        <div className="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/40 text-rose-800 dark:text-rose-200 text-xs flex items-start gap-2">
+        <div className="p-2.5 rounded-md bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/40 text-rose-800 dark:text-rose-200 text-xs flex items-start gap-2">
           <AlertTriangle size={14} className="text-rose-500 shrink-0 mt-0.5" />
           <p>{calculated.trapNote}</p>
         </div>
       )}
 
       {/* Visual Bricks */}
-      <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
+      <div className="p-3 rounded-md bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
         <div className="flex flex-wrap items-center gap-1.5">
           {calculated.factors.map((fact, idx) => (
             <React.Fragment key={idx}>
@@ -194,9 +194,9 @@ export const HexAsciiWidget: React.FC = () => {
   };
 
   return (
-    <div className="my-5 p-4 sm:p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
+    <div className="my-5 p-4 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3">
       <div className="flex items-center gap-2">
-        <Binary className="text-cyan-600 dark:text-cyan-400" size={18} />
+        <Binary className="text-slate-600 dark:text-slate-300" size={18} />
         <h4 className="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">
           Hex ↔ ASCII Конвертер
         </h4>
@@ -224,12 +224,12 @@ export const HexAsciiWidget: React.FC = () => {
             type="text"
             value={hexInput}
             onChange={(e) => decodeHex(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-xs font-mono text-slate-900 dark:text-cyan-300 focus:outline-none focus:border-cyan-500"
+            className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-md px-3 py-1.5 text-xs font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:border-emerald-500"
           />
         </div>
         <div>
           <label className="text-[11px] text-slate-500 font-mono block mb-1">ASCII текст:</label>
-          <div className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
+          <div className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-md px-3 py-1.5 text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
             {asciiResult || '—'}
           </div>
         </div>
@@ -242,9 +242,9 @@ export const RecursionTreeWidget: React.FC = () => {
   const [nVal, setNVal] = useState<number>(4);
 
   return (
-    <div className="my-5 p-4 sm:p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
+    <div className="my-5 p-4 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3">
       <div className="flex items-center gap-2">
-        <GitFork className="text-violet-600 dark:text-violet-400" size={18} />
+        <GitFork className="text-slate-600 dark:text-slate-300" size={18} />
         <h4 className="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">
           Стек вызовов Fibonacci
         </h4>
@@ -257,7 +257,7 @@ export const RecursionTreeWidget: React.FC = () => {
             onClick={() => setNVal(n)}
             className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold ${
               nVal === n
-                ? 'bg-violet-600 text-white'
+                ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900'
                 : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
             }`}
           >
@@ -266,7 +266,7 @@ export const RecursionTreeWidget: React.FC = () => {
         ))}
       </div>
 
-      <div className="p-3 rounded-xl bg-slate-900 text-slate-200 text-xs font-mono overflow-x-auto">
+      <div className="p-3 rounded-md bg-slate-900 text-slate-200 text-xs font-mono overflow-x-auto">
         {nVal === 4 && (
           <pre className="leading-relaxed">
 {`fib(4) = 3
@@ -305,7 +305,7 @@ export const GridCalculatorWidget: React.FC = () => {
   const step = (end - start) / intervals;
 
   return (
-    <div className="my-5 p-4 sm:p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
+    <div className="my-5 p-4 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3">
       <div className="flex items-center gap-2">
         <Grid className="text-amber-600 dark:text-amber-400" size={18} />
         <h4 className="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">
@@ -330,15 +330,15 @@ export const GridCalculatorWidget: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono">
-        <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+        <div className="p-2.5 rounded-md bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
           <span className="text-slate-400 block text-[10px]">Отрезок:</span>
           <span className="font-bold text-slate-800 dark:text-slate-200">[-π, +π] (2π)</span>
         </div>
-        <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+        <div className="p-2.5 rounded-md bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
           <span className="text-slate-400 block text-[10px]">Интервалов (N - 1):</span>
           <span className="font-bold text-amber-600 dark:text-amber-400">{intervals}</span>
         </div>
-        <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+        <div className="p-2.5 rounded-md bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
           <span className="text-slate-400 block text-[10px]">Шаг step:</span>
           <span className="font-bold text-emerald-600 dark:text-emerald-400">{step.toFixed(7)}</span>
         </div>

@@ -61,7 +61,7 @@ export const MathDrillView: React.FC = () => {
   return (
     <div className="max-w-2xl mx-auto space-y-5 pb-16">
       {/* Header */}
-      <div className="p-4 sm:p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-2 shadow-sm">
+      <div className="p-4 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Calculator className="text-amber-500" size={20} />
@@ -109,7 +109,7 @@ export const MathDrillView: React.FC = () => {
       </div>
 
       {/* Main Card */}
-      <div className="p-6 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-5 shadow-sm text-center">
+      <div className="p-6 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-5 text-center">
         <div className="space-y-1">
           <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">
             Число:
@@ -120,7 +120,7 @@ export const MathDrillView: React.FC = () => {
         </div>
 
         {showHint && (
-          <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 text-xs text-amber-900 dark:text-amber-200 text-left">
+          <div className="p-3 rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 text-xs text-amber-900 dark:text-amber-200 text-left">
             <span className="font-semibold block mb-0.5">💡 Подсказка:</span>
             <p>{currentItem.hint}</p>
           </div>
@@ -132,13 +132,13 @@ export const MathDrillView: React.FC = () => {
             value={userAnswer}
             onChange={(e) => setUserAnswer(e.target.value)}
             placeholder="Наибольший делитель..."
-            className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-amber-500 rounded-xl px-3 py-2 font-mono text-sm font-bold text-slate-900 dark:text-white focus:outline-none"
+            className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-amber-500 rounded-md px-3 py-2 font-mono text-sm font-bold text-slate-900 dark:text-white focus:outline-none"
             autoFocus
           />
           <button
             type="submit"
             disabled={!userAnswer.trim()}
-            className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition-colors cursor-pointer"
+            className="px-4 py-2 rounded-md bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition-colors cursor-pointer"
           >
             Проверить
           </button>
@@ -157,7 +157,7 @@ export const MathDrillView: React.FC = () => {
 
         {/* Feedback */}
         {feedback.status !== 'idle' && (
-          <div className={`p-4 rounded-xl border text-left text-xs space-y-2 ${
+          <div className={`p-4 rounded-md border text-left text-xs space-y-2 ${
             feedback.status === 'correct' 
               ? 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200' 
               : 'bg-rose-50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-200'

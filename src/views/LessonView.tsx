@@ -45,7 +45,7 @@ export const LessonView: React.FC<LessonViewProps> = ({
         <p className="text-slate-500">Урок не найден.</p>
         <button
           onClick={onBackToMap}
-          className="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold"
+          className="px-3.5 py-1.5 rounded-md bg-slate-100 dark:bg-slate-800 text-xs font-semibold"
         >
           Вернуться к списку
         </button>
@@ -59,7 +59,7 @@ export const LessonView: React.FC<LessonViewProps> = ({
   const isDone = isLessonCompleted(lesson.id);
 
   return (
-    <div className="space-y-6 pb-16 max-w-3xl mx-auto">
+    <div className="space-y-4 pb-16 max-w-3xl mx-auto">
       {/* Top Breadcrumb & Status */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <button
@@ -84,7 +84,7 @@ export const LessonView: React.FC<LessonViewProps> = ({
       </div>
 
       {/* Lesson Header */}
-      <div className="p-5 sm:p-6 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-2 shadow-sm">
+      <div className="p-4 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-2">
         <div className="flex items-center gap-2">
           <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
             Урок {lesson.number}
@@ -96,7 +96,7 @@ export const LessonView: React.FC<LessonViewProps> = ({
           )}
         </div>
 
-        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+        <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
           {lesson.title}
         </h1>
 
@@ -116,7 +116,7 @@ export const LessonView: React.FC<LessonViewProps> = ({
       {/* Theory Sections */}
       <div className="space-y-5">
         {lesson.theoryContent.map((section, sIdx) => (
-          <div key={sIdx} className="p-5 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
+          <div key={sIdx} className="p-5 rounded-lg border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 space-y-3">
             <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100">
               {section.title}
             </h3>
@@ -129,7 +129,7 @@ export const LessonView: React.FC<LessonViewProps> = ({
 
             {/* Tables if any */}
             {section.tables?.map((table, tIdx) => (
-              <div key={tIdx} className="overflow-x-auto my-2 rounded-xl border border-slate-200 dark:border-slate-800">
+              <div key={tIdx} className="overflow-x-auto my-2 rounded-md border border-slate-200 dark:border-slate-800">
                 <table className="w-full text-left text-xs">
                   <thead className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
                     <tr>
@@ -167,13 +167,13 @@ export const LessonView: React.FC<LessonViewProps> = ({
               if (callout.type === 'danger') {
                 boxClass = 'bg-rose-50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800/40 text-rose-900 dark:text-rose-200';
               } else if (callout.type === 'peer_review') {
-                boxClass = 'bg-indigo-50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-800/40 text-indigo-900 dark:text-indigo-200';
+                boxClass = 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200';
               } else if (callout.type === 'analogy') {
                 boxClass = 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/40 text-emerald-900 dark:text-emerald-200';
               }
 
               return (
-                <div key={coIdx} className={`p-3.5 rounded-xl border text-xs leading-relaxed space-y-1 ${boxClass}`}>
+                <div key={coIdx} className={`p-3.5 rounded-md border text-xs leading-relaxed space-y-1 ${boxClass}`}>
                   <h5 className="font-bold">{callout.title}</h5>
                   <p className="whitespace-pre-wrap">{callout.content}</p>
                 </div>
@@ -211,7 +211,7 @@ export const LessonView: React.FC<LessonViewProps> = ({
         {prevLesson ? (
           <button
             onClick={() => onSelectLesson(prevLesson.id)}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold"
           >
             <ArrowLeft size={13} />
             <span>Урок {prevLesson.number}</span>
@@ -223,7 +223,7 @@ export const LessonView: React.FC<LessonViewProps> = ({
         {nextLesson ? (
           <button
             onClick={() => onSelectLesson(nextLesson.id)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold"
           >
             <span>Урок {nextLesson.number}: {nextLesson.title}</span>
             <ArrowRight size={13} />
@@ -231,7 +231,7 @@ export const LessonView: React.FC<LessonViewProps> = ({
         ) : (
           <button
             onClick={onBackToMap}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-semibold"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-md bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-semibold"
           >
             <span>К списку уроков</span>
             <ArrowRight size={13} />
