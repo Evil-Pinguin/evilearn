@@ -12,12 +12,12 @@ import {
   Menu, 
   X, 
   RotateCcw,
-  BookOpen
+  ShieldCheck
 } from 'lucide-react';
 
 interface NavbarProps {
-  currentView: 'home' | 'lesson' | 'exam' | 'flashcards' | 'math' | 'tools';
-  setCurrentView: (view: 'home' | 'lesson' | 'exam' | 'flashcards' | 'math' | 'tools') => void;
+  currentView: 'home' | 'lesson' | 'exam' | 'flashcards' | 'math' | 'tools' | 'day2';
+  setCurrentView: (view: 'home' | 'lesson' | 'exam' | 'flashcards' | 'math' | 'tools' | 'day2') => void;
   selectedLessonId: string | null;
 }
 
@@ -31,10 +31,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navItems = [
     { id: 'home', label: 'Карта прогресса', icon: Map },
-    { id: 'exam', label: 'Симулятор экзамена', icon: Timer, badge: '10 задач' },
-    { id: 'flashcards', label: 'Словарь карточек', icon: Layers, count: 24 },
-    { id: 'math', label: 'Дрилл «Кирпичики»', icon: Calculator, badge: 'D03' },
-    { id: 'tools', label: 'Инструменты & Песочница', icon: Wrench }
+    { id: 'day2', label: 'Квесты Дня 2', icon: ShieldCheck, badge: '7 разборов' },
+    { id: 'exam', label: 'Экзамен', icon: Timer, badge: '10 задач' },
+    { id: 'flashcards', label: 'Словарь', icon: Layers, badge: '60 шт' },
+    { id: 'math', label: '«Кирпичики»', icon: Calculator, badge: 'D03' },
+    { id: 'tools', label: 'Песочница', icon: Wrench }
   ] as const;
 
   return (
@@ -67,7 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden xl:flex items-center gap-1">
             {navItems.map(item => {
               const Icon = item.icon;
               const isActive = currentView === item.id;
@@ -75,13 +76,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={item.id}
                   onClick={() => setCurrentView(item.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
                     isActive
                       ? 'bg-slate-800 text-emerald-400 font-semibold shadow-inner border border-slate-700/60'
                       : 'text-slate-300 hover:text-white hover:bg-slate-900'
                   }`}
                 >
-                  <Icon size={15} className={isActive ? 'text-emerald-400' : 'text-slate-400'} />
+                  <Icon size={14} className={isActive ? 'text-emerald-400' : 'text-slate-400'} />
                   <span>{item.label}</span>
                   {item.badge && (
                     <span className="text-[10px] px-1.5 py-0.2 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
@@ -131,7 +132,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Mobile Menu Toggle */}
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="flex items-center gap-2 xl:hidden">
             <div className="flex items-center gap-1 text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg border border-emerald-500/20">
               <Sparkles size={12} /> {progress.xp} XP
             </div>
@@ -147,7 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-slate-800 bg-slate-950/95 px-4 pt-3 pb-6 space-y-2 animate-fadeIn">
+        <div className="xl:hidden border-b border-slate-800 bg-slate-950/95 px-4 pt-3 pb-6 space-y-2 animate-fadeIn">
           {navItems.map(item => {
             const Icon = item.icon;
             const isActive = currentView === item.id;

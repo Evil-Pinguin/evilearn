@@ -1,223 +1,540 @@
 import { Flashcard } from '../types';
 
 export const flashcardsData: Flashcard[] = [
-  // BASH & LINUX
+  // ==========================================
+  // 40 КОМАНД (BASH, LINUX, GIT, TOOLS)
+  // ==========================================
   {
-    id: 'fc-1',
+    id: 'cmd-1',
     category: 'bash',
-    question: 'Как создать вложенную структуру папок a/b/c одной командой?',
-    answer: 'mkdir -p a/b/c',
-    codeExample: 'mkdir -p src/data/logs',
-    tip: 'Флаг -p (parents) создаёт все недостающие промежуточные папки без ошибки.',
+    type: 'command',
+    question: 'pwd',
+    answer: 'Print Working Directory: показывает полный абсолютный путь к текущей папке.',
+    codeExample: 'pwd\n# Вывод: /home/breashee/evilearn/src',
     difficulty: 'easy'
   },
   {
-    id: 'fc-2',
+    id: 'cmd-2',
     category: 'bash',
-    question: 'Как посмотреть все файлы, включая скрытые, с правами и размером?',
-    answer: 'ls -la',
-    codeExample: 'ls -la src/',
-    tip: '-l — подробный список (long), -a — включая скрытые файлы с точкой (all).',
+    type: 'command',
+    question: 'ls',
+    answer: 'Список файлов и папок в текущей директории.',
+    codeExample: 'ls\n# 1948.c  char_decode.c  quest3.c',
     difficulty: 'easy'
   },
   {
-    id: 'fc-3',
+    id: 'cmd-3',
     category: 'bash',
-    question: 'Как вывести ровно 13-ю строку файла без открытия редактора?',
-    answer: "sed -n '13p' filename",
-    codeExample: "sed -n '13p' src/data/door_data.txt",
-    tip: '-n подавляет автовывод всех строк, p печатает указанную.',
+    type: 'command',
+    question: 'ls -l',
+    answer: 'Подробный список файлов с правами доступа (rwx), владельцем, размером в байтах и датой.',
+    codeExample: 'ls -l src/',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-4',
+    category: 'bash',
+    type: 'command',
+    question: 'ls -la',
+    answer: 'Подробный список ВСЕХ файлов, включая скрытые (начинающиеся с точки, например .clang-format, .git).',
+    codeExample: 'ls -la',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-5',
+    category: 'bash',
+    type: 'command',
+    question: 'cd папка',
+    answer: 'Перейти внутрь указанной папки (Change Directory).',
+    codeExample: 'cd src',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-6',
+    category: 'bash',
+    type: 'command',
+    question: 'cd ..',
+    answer: 'Подняться на один уровень выше к родительской директории.',
+    codeExample: 'cd ..',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-7',
+    category: 'bash',
+    type: 'command',
+    question: 'cd ~',
+    answer: 'Мгновенно перейти в домашнюю директорию пользователя (~).',
+    codeExample: 'cd ~',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-8',
+    category: 'bash',
+    type: 'command',
+    question: 'mkdir имя',
+    answer: 'Создать новую директорию (папку).',
+    codeExample: 'mkdir training',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-9',
+    category: 'bash',
+    type: 'command',
+    question: 'mkdir -p a/b/c',
+    answer: 'Создать вложенное дерево папок с автоматическим созданием всех промежуточных уровней.',
+    codeExample: 'mkdir -p build/debug/logs',
     difficulty: 'medium'
   },
   {
-    id: 'fc-4',
+    id: 'cmd-10',
     category: 'bash',
-    question: 'Как передать строку на вход скомпилированной программе через пайп?',
-    answer: 'echo "строка" | ./program',
-    codeExample: 'echo "48 45 4C" | ./char_decode 0',
-    tip: '| перенаправляет stdout левой команды в stdin правой команды.',
+    type: 'command',
+    question: 'touch файл',
+    answer: 'Создать пустой файл или обновить время модификации существующего.',
+    codeExample: 'touch notes.txt',
     difficulty: 'easy'
   },
   {
-    id: 'fc-5',
+    id: 'cmd-11',
     category: 'bash',
-    question: 'В чем разница между > и >> при перенаправлении в файл?',
-    answer: '> перезаписывает файл целиком, а >> дописывает данные в конец файла.',
+    type: 'command',
+    question: 'rm файл',
+    answer: 'Удалить файл (ВНИМАНИЕ: корзины в Linux нет, удаление навсегда!).',
+    codeExample: 'rm old.c',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-12',
+    category: 'bash',
+    type: 'command',
+    question: 'rm -r папка',
+    answer: 'Рекурсивно удалить папку вместе со всем её содержимым.',
+    codeExample: 'rm -r test_dir',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cmd-13',
+    category: 'bash',
+    type: 'command',
+    question: 'mv что куда',
+    answer: 'Переместить файл или переименовать его.',
+    codeExample: 'mv training/notes.txt training/diary.txt',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-14',
+    category: 'bash',
+    type: 'command',
+    question: 'cp что куда',
+    answer: 'Создать копию файла или папки (с флагом -r).',
+    codeExample: 'cp diary.txt diary_backup.txt',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-15',
+    category: 'bash',
+    type: 'command',
+    question: 'cat файл',
+    answer: 'Вывести полное текстовое содержимое файла в консоль.',
+    codeExample: 'cat src/1948.c',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-16',
+    category: 'bash',
+    type: 'command',
+    question: 'head -n 10 файл',
+    answer: 'Показать первые N строк файла (по умолчанию 10 строк).',
+    codeExample: 'head -n 5 output.txt',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-17',
+    category: 'bash',
+    type: 'command',
+    question: 'tail -n 10 файл',
+    answer: 'Показать последние N строк файла.',
+    codeExample: 'tail -n 5 output.txt',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-18',
+    category: 'bash',
+    type: 'command',
+    question: 'wc -l файл',
+    answer: 'Подсчитать количество строк в файле.',
+    codeExample: 'wc -l src/data/door_data.txt\n# 42',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cmd-19',
+    category: 'bash',
+    type: 'command',
+    question: 'grep слово',
+    answer: 'Поиск и фильтрация строк, содержащих указанный текст или шаблон.',
+    codeExample: 'ps aux | grep sleep',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cmd-20',
+    category: 'bash',
+    type: 'command',
+    question: "sed -n '13p' файл",
+    answer: 'Напечатать ровно 13-ю строку файла без открытия текстового редактора.',
+    codeExample: "sed -n '13p' src/data/door_data.txt",
+    difficulty: 'hard'
+  },
+  {
+    id: 'cmd-21',
+    category: 'bash',
+    type: 'command',
+    question: 'chmod +x скрипт',
+    answer: 'Добавить право на запуск (execute) файлу скрипта или программы.',
+    codeExample: 'chmod +x hello.sh\n./hello.sh',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-22',
+    category: 'bash',
+    type: 'command',
+    question: 'ps aux',
+    answer: 'Показать список всех запущенных процессов в системе со столбцами USER, PID, %CPU, %MEM.',
+    codeExample: 'ps aux | grep a.out',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cmd-23',
+    category: 'bash',
+    type: 'command',
+    question: 'kill PID',
+    answer: 'Послать процессу сигнал завершения SIGTERM (вежливая просьба закрыться).',
+    codeExample: 'kill 12345',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-24',
+    category: 'bash',
+    type: 'command',
+    question: 'kill -9 PID',
+    answer: 'Принудительно и немедленно уничтожить процесс сигналом SIGKILL (нельзя проигнорировать).',
+    codeExample: 'kill -9 12345',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cmd-25',
+    category: 'bash',
+    type: 'command',
+    question: 'sleep 300 &',
+    answer: 'Запустить фоновый процесс сна на 300 секунд (символ & переводит в фон).',
+    codeExample: 'sleep 300 &',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cmd-26',
+    category: 'bash',
+    type: 'command',
+    question: 'echo "строка" | ./program',
+    answer: 'Передать текст со стандартного вывода echo на стандартный ввод stdin программы через пайп |.',
+    codeExample: 'echo "8 2" | ./arithmetic',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-27',
+    category: 'bash',
+    type: 'command',
+    question: '> vs >>',
+    answer: '> открывает файл с очисткой и перезаписывает его; >> открывает в режиме добавления в конец.',
     codeExample: './prog > out.txt   # перезапись\n./prog >> log.txt  # добавление',
     difficulty: 'easy'
   },
-
-  // GIT
   {
-    id: 'fc-6',
+    id: 'cmd-28',
+    category: 'tools',
+    type: 'command',
+    question: 'ssh-keygen -t ed25519',
+    answer: 'Сгенерировать безопасную пару SSH-ключей (приватный id_ed25519 и публичный id_ed25519.pub).',
+    codeExample: 'ssh-keygen -t ed25519',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cmd-29',
+    category: 'tools',
+    type: 'command',
+    question: 'cat ~/.ssh/id_ed25519.pub',
+    answer: 'Вывести публичный SSH-ключ для копирования в настройки профиля GitLab / GitHub.',
+    codeExample: 'cat ~/.ssh/id_ed25519.pub',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cmd-30',
+    category: 'tools',
+    type: 'command',
+    question: 'ssh -T -p 2222 git@git-ssh.21-school.ru',
+    answer: 'Проверить работоспособность SSH-ключа на сервере Школы 21 ("Welcome, @username!").',
+    codeExample: 'ssh -T -p 2222 git@git-ssh.21-school.ru',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cmd-31',
     category: 'git',
-    question: 'Какая последовательность команд фиксирует и отправляет квест?',
-    answer: 'git add <файл> → git commit -m "сообщение" → git push origin <ветка>',
-    codeExample: 'git add src/1948.c\ngit commit -m "quest 1: prime divisor"\ngit push origin develop',
-    tip: 'Аналогия «Коробка-Посылка»: add — положить, commit — запечатать, push — отправить.',
+    type: 'command',
+    question: 'git clone <url>',
+    answer: 'Скачать удаленный репозиторий проекта с сервера на рабочую станцию (выполняется 1 раз).',
+    codeExample: 'git clone git@git-ssh.21-school.ru:v1/D03T03.git',
     difficulty: 'easy'
   },
   {
-    id: 'fc-7',
+    id: 'cmd-32',
     category: 'git',
-    question: 'Как создать ветку develop и сразу перейти в неё?',
-    answer: 'git checkout -b develop',
+    type: 'command',
+    question: 'git checkout -b develop',
+    answer: 'Создать новую ветку develop и сразу переключиться на неё.',
     codeExample: 'git checkout -b develop',
-    tip: 'Флаг -b означает "создать новую ветку (branch) перед переключением".',
     difficulty: 'easy'
   },
   {
-    id: 'fc-8',
+    id: 'cmd-33',
     category: 'git',
-    question: 'Как отменить случайные изменения в файле и вернуть состояние последнего коммита?',
-    answer: 'git restore <путь_к_файлу>',
-    codeExample: 'git restore src/char_decode.c',
-    tip: 'Спасает, если случайно удалила строки в nano или испортила код.',
+    type: 'command',
+    question: 'git status',
+    answer: 'Показать текущее состояние репозитория: изменённые, добавленные в индекс и неотслеживаемые файлы.',
+    codeExample: 'git status',
     difficulty: 'easy'
   },
   {
-    id: 'fc-9',
+    id: 'cmd-34',
     category: 'git',
-    question: 'Как посмотреть построчно, что именно изменено в коде (+ и -)?',
-    answer: 'git diff',
+    type: 'command',
+    question: 'git add <файл>',
+    answer: 'Добавить файл в staging area (индекс) для включения в следующий коммит.',
+    codeExample: 'git add src/1948.c',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-35',
+    category: 'git',
+    type: 'command',
+    question: 'git commit -m "сообщение"',
+    answer: 'Зафиксировать снимок изменений из индекса с поясняющим комментарием.',
+    codeExample: 'git commit -m "quest 1: prime divisor"',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-36',
+    category: 'git',
+    type: 'command',
+    question: 'git push origin develop',
+    answer: 'Отправить локальные зафиксированные коммиты в ветку develop на удаленный сервер origin.',
+    codeExample: 'git push origin develop',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cmd-37',
+    category: 'git',
+    type: 'command',
+    question: 'git diff',
+    answer: 'Показать построчные изменения в файлах по сравнению с последним коммитом (+ добавлено, - удалено).',
     codeExample: 'git diff src/1948.c',
-    tip: 'Красные строки (-) удалены, зеленые (+) добавлены.',
     difficulty: 'easy'
   },
   {
-    id: 'fc-10',
+    id: 'cmd-38',
     category: 'git',
-    question: 'Что делать, если случайно скомпилировала бинарник прямо в src/?',
-    answer: 'Немедленно удалить бинарник (rm src/имя_бинарника) до добавления в git add!',
-    codeExample: 'rm src/1948 src/char_decode',
-    tip: 'Исполняемые файлы в репозиторий добавлять СТРОГО ЗАПРЕЩЕНО.',
-    difficulty: 'medium'
-  },
-
-  // C BASICS
-  {
-    id: 'fc-11',
-    category: 'c_basics',
-    question: 'Какой спецификатор формата используется для 64-битного целого long long?',
-    answer: '%lld',
-    codeExample: 'long long big = 9223372036854775807LL;\nprintf("%lld\\n", big);',
-    tip: 'Для обычного int — %d, для double — %lf, для char — %c.',
+    type: 'command',
+    question: 'git restore <файл>',
+    answer: 'Отменить незафиксированные изменения в файле и вернуть его к состоянию последнего коммита.',
+    codeExample: 'git restore src/char_decode.c',
     difficulty: 'easy'
   },
   {
-    id: 'fc-12',
-    category: 'c_basics',
-    question: 'Как напечатать вещественное число с ровно 7 знаками после запятой?',
-    answer: '%.7lf',
-    codeExample: 'double val = 3.14159265;\nprintf("%.7lf\\n", val);',
-    tip: 'Точка и число после неё задают количество знаков после запятой.',
+    id: 'cmd-39',
+    category: 'git',
+    type: 'command',
+    question: 'git log --oneline',
+    answer: 'Показать компактную историю коммитов в одну строку на коммит.',
+    codeExample: 'git log --oneline -n 5',
     difficulty: 'easy'
   },
   {
-    id: 'fc-13',
-    category: 'c_basics',
-    question: 'Почему одной проверки scanf("%d", &x) == 1 недостаточно для надежной валидации?',
-    answer: 'Потому что scanf прочитает число и остановится на первой букве. Ввод "12abc" вернет 1, пропустив "abc" в буфер.',
-    codeExample: 'if (scanf("%d", &n) != 1 || !tail_is_clean()) {\n    printf("n/a\\n");\n}',
-    tip: 'Всегда используй tail_is_clean() для проверки отсутствия мусора в конце строки!',
-    difficulty: 'hard'
-  },
-  {
-    id: 'fc-14',
-    category: 'c_basics',
-    question: 'В чем суть принципа Дейкстры «Одна точка выхода» (Single Exit)?',
-    answer: 'Функция должна иметь единственный return в конце, без разбросанных return по телу функции.',
-    codeExample: 'int error = 0;\nif (...) error = 1;\nif (error) printf("n/a\\n");\nelse printf("%d\\n", res);\nreturn 0;',
-    difficulty: 'medium'
-  },
-
-  // C ADVANCED
-  {
-    id: 'fc-15',
-    category: 'c_advanced',
-    question: 'Как передать переменную в функцию, чтобы функция могла изменить её значение?',
-    answer: 'Передать адрес переменной (&var), а в параметрах функции принять указатель (*ptr) и разыменовать его.',
-    codeExample: 'void inc(int *x) { *x += 1; }\n// Вызов:\nint a = 5; inc(&a); // a станет 6',
-    tip: 'Аналогия: ты даешь ключ (&a) от своего шкафа, и функция кладет вещь прямо внутрь (*x).',
-    difficulty: 'medium'
-  },
-  {
-    id: 'fc-16',
-    category: 'c_advanced',
-    question: 'Как перевести шестнадцатеричный символ hex в число без функций atoi/sscanf?',
-    answer: "c - '0' (для цифр '0'-'9') и c - 'A' + 10 (для букв 'A'-'F')",
-    codeExample: "int v = (c >= '0' && c <= '9') ? c - '0' : c - 'A' + 10;",
-    tip: "В ASCII символы '0'-'9' и 'A'-'F' идут строго подряд по порядку.",
-    difficulty: 'hard'
-  },
-  {
-    id: 'fc-17',
-    category: 'c_advanced',
-    question: 'Что произойдет при отсутствии базового случая в рекурсии?',
-    answer: 'Бесконечные вызовы функции приведут к переполнению стека (Stack Overflow) и падению с Segmentation fault.',
-    codeExample: 'long long fib(int n) {\n    if (n < 3) return 1; // БАЗОВЫЙ СЛУЧАЙ ОБЯЗАТЕЛЕН\n    return fib(n-1) + fib(n-2);\n}',
-    difficulty: 'medium'
-  },
-  {
-    id: 'fc-18',
-    category: 'c_advanced',
-    question: 'Как объявить указатель на функцию, принимающую double и int*, и возвращающую double?',
-    answer: 'double (*f)(double, int *)',
-    codeExample: 'void plot(double (*f)(double, int *)) {\n    int def = 0;\n    double y = f(1.5, &def);\n}',
-    tip: 'Круглые скобки вокруг (*f) обязательны, иначе f станет функцией, возвращающей указатель на double.',
-    difficulty: 'hard'
-  },
-
-  // TOOLS & SCHOOL 21 RULES
-  {
-    id: 'fc-19',
+    id: 'cmd-40',
     category: 'tools',
-    question: 'Какие 4 обязательных флага GCC требуются во всех квестах Школы 21?',
-    answer: '-Wall -Werror -Wextra -std=c11',
-    codeExample: 'gcc -Wall -Werror -Wextra -std=c11 src/1948.c -o 1948',
-    tip: '-Werror превращает все предупреждения в ошибки.',
-    difficulty: 'easy'
-  },
-  {
-    id: 'fc-20',
-    category: 'tools',
-    question: 'Где в команде GCC должен стоять флаг -lm для подключения math.h?',
-    answer: 'В САМОМ КОНЦЕ команды (после исходных файлов)!',
+    type: 'command',
+    question: 'gcc -Wall -Werror -Wextra -std=c11 file.c -lm -o binary',
+    answer: 'Каноническая команда сборки C11 по стандартам Школы 21 с превращением warning в ошибки и линковкой math.h в конце.',
     codeExample: 'gcc -Wall -Werror -Wextra -std=c11 door_functions.c -lm -o door_functions',
-    tip: 'Линковщик GCC связывает библиотеки слева направо. Если поставить в начало, будет undefined reference.',
-    difficulty: 'medium'
+    difficulty: 'hard'
   },
+
+  // ==========================================
+  // 20 КОНЦЕПЦИЙ И ПРАВИЛ ШКОЛЫ 21
+  // ==========================================
   {
-    id: 'fc-21',
-    category: 'tools',
-    question: 'Как проверить и как исправить кодстайл по .clang-format?',
-    answer: 'clang-format -n <файл> (проверить) и clang-format -i <файл> (исправить).',
-    codeExample: 'clang-format -n src/1948.c # отчет\nclang-format -i src/1948.c # автоисправление',
-    difficulty: 'easy'
-  },
-  {
-    id: 'fc-22',
-    category: 'school21',
-    question: 'Формула шага сетки: отрезок длины L разбит на N точек включительно. Какой шаг?',
-    answer: 'step = L / (N - 1)',
-    codeExample: 'double step = 2.0 * PI / 41.0; // Для 42 точек от -PI до +PI',
-    tip: 'Аналогия: у забора из 42 досок ровно 41 щель (промежуток).',
-    difficulty: 'medium'
-  },
-  {
-    id: 'fc-23',
-    category: 'school21',
-    question: 'Являются ли числа 9, 25, 49 простыми числами?',
-    answer: 'НЕТ! Это квадраты простых чисел (3·3, 5·5, 7·7), они имеют по 3 делителя и являются составными.',
-    tip: 'Нечётное число НЕ ОБЯЗАТЕЛЬНО простое. Ответ делителя всегда сверяй по списку простых: 2, 3, 5, 7, 11, 13...',
+    id: 'cpt-1',
+    category: 'concepts',
+    type: 'concept',
+    question: '%c-детектор мусора в scanf',
+    answer: 'Конструкция `if (scanf("%d %c", &a, &extra) != 1)` читает 2 аргумента, но ждёт ровно 1. Если после числа есть мусор (12.5 или 12x), extra ловит его, scanf возвращает 2, и программа печатает n/a.',
+    codeExample: 'int a; char extra;\nif (scanf("%d %c", &a, &extra) != 1) {\n  printf("n/a"); return 0;\n}',
     difficulty: 'hard'
   },
   {
-    id: 'fc-24',
-    category: 'school21',
-    question: 'Какой ритуал нахождения наибольшего простого делителя числа?',
-    answer: '1. Ломать на простые кирпичики до конца. 2. Выписать все множители в ряд. 3. Выбрать наибольший кирпичик.',
-    codeExample: '91 = 7 × 13 → ответ: 13\n100 = 2 × 2 × 5 × 5 → ответ: 5\n32 = 2⁵ → ответ: 2',
+    id: 'cpt-2',
+    category: 'concepts',
+    type: 'concept',
+    question: '%lf vs %f в C',
+    answer: 'Переменная double в scanf ОБЯЗАТЕЛЬНО читается через `%lf` (long float), а в printf печатается через `%f` (или `%.2f`, `%.7f`).',
+    codeExample: 'double r;\nscanf("%lf %c", &r, &extra);\nprintf("%.2f", r);',
     difficulty: 'medium'
+  },
+  {
+    id: 'cpt-3',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Эпсилон-сравнение (fabs < 1e-6)',
+    answer: 'Вещественные числа double хранятся с погрешностью IEEE 754 (0.1+0.2 != 0.3). Прямое сравнение `==` запрещено. Правильно: `fabs(a - b) < 1e-6`.',
+    codeExample: 'const double kEps = 1e-6;\nif (fabs(a - b) < kEps) { /* равны */ }',
+    difficulty: 'hard'
+  },
+  {
+    id: 'cpt-4',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Базовый случай рекурсии',
+    answer: 'Условие остановки рекурсии (например `if (n <= 1) return 1;`). Без базового случая функция вызывает себя бесконечно, стек вызовов переполняется, и программа падает с Segmentation Fault.',
+    codeExample: 'int f(int n) {\n  if (n <= 1) return 1; // БАЗА\n  return n * f(n - 1);  // ШАГ\n}',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cpt-5',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Переполнение int при Fibonacci',
+    answer: '32-битный signed int вмещает числа до 2,147,483,647. Начиная с fib(47), происходит переполнение в отрицательные числа. Для больших значений обязательно использовать `long long` и `%lld`.',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cpt-6',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Посимвольная сверка автотестов',
+    answer: 'В большинстве базовых автотестов Школы 21 лишний пробел или лишний перенос строки `\\n` в конце вывода приводит к FAIL тестов платформы.',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cpt-7',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Принцип Дейкстры: Single Exit Point',
+    answer: 'Функция должна иметь ровно одну точку выхода (единственный return в самом конце). Запрещено разбрасывать return по разным веткам if/else.',
+    codeExample: 'int res = 0;\nif (...) res = 1;\nreturn res; // единственная точка',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cpt-8',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Запрет бинарников в Git',
+    answer: 'Скомпилированные файлы (a.out, 1948, hi) запрещено коммитить в Git. В репозитории хранятся только исходники `.c`, `.h` и `.clang-format`.',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cpt-9',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Символ как число ASCII',
+    answer: 'Символ char — это число от 0 до 255. Перевод hex/цифры в число: `c - \'0\'` для \'0\'..\'9\' и `c - \'A\' + 10` для \'A\'..\'F\'.',
+    codeExample: "int digit = '7' - '0'; // 7\nint hex = 'F' - 'A' + 10; // 15",
+    difficulty: 'hard'
+  },
+  {
+    id: 'cpt-10',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Аргументы argc и argv',
+    answer: '`argc` — количество аргументов командной строки (включая имя программы). `argv` — массив строк параметров (`argv[1]` — первый переданный аргумент).',
+    codeExample: 'int main(int argc, char *argv[]) {\n  if (argc == 2 && argv[1][0] == \'0\') ...\n}',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cpt-11',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Целочисленное деление vs Остаток',
+    answer: 'В C деление двух int `7 / 2` равно `3` (дробная часть отбрасывается). Остаток `7 % 2` равен `1`.',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cpt-12',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Деление вычитанием (имитация / и %)',
+    answer: 'Чтобы разделить a на b без операторов `/` и `%`, вычитаем b из a в цикле `while (rem >= b) { rem -= b; count++; }`. count — частное, rem — остаток.',
+    codeExample: 'while (rem >= b) { rem -= b; count++; }',
+    difficulty: 'hard'
+  },
+  {
+    id: 'cpt-13',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Оптимизация простоты i * i <= n',
+    answer: 'При проверке простоты числа n достаточно проверять делители i от 2 до корня числа (`i * i <= n`), так как любой составной делитель больше корня имеет парный меньше корня.',
+    codeExample: 'for (int i = 2; i * i <= n; i++) {\n  if (n % i == 0) return 0;\n}',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cpt-14',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Ловушка квадратов простых (9, 25, 49)',
+    answer: 'Числа 9 (3·3), 25 (5·5), 49 (7·7) — СОСТАВНЫЕ числа! Они нечётные, но имеют по 3 делителя. Нельзя называть их простыми делителями.',
+    difficulty: 'hard'
+  },
+  {
+    id: 'cpt-15',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Стиль Google: Порядок #include',
+    answer: 'Заголовочные файлы подключаются строго по алфавиту: `#include <math.h>` пишется ВЫШЕ `#include <stdio.h>` (m идёт раньше s).',
+    difficulty: 'medium'
+  },
+  {
+    id: 'cpt-16',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Пайп | как конвейер',
+    answer: 'Символ `|` соединяет вывод stdout одной программы с вводом stdin другой. Пример: `echo "8 2" | ./arithmetic`.',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cpt-17',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Горячие клавиши nano',
+    answer: 'Ctrl+O Enter — сохранить файл; Ctrl+X — выйти; Ctrl+K — ВЫРЕЗАТЬ строку (осторожно со случайным удалением кода!).',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cpt-18',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Константа M_PI и define PI',
+    answer: 'В стандарте C11 M_PI доступен в math.h. В заданиях Школы 21 часто требуют задать `#define PI 3.14159265358979323846` в начале файла.',
+    difficulty: 'easy'
+  },
+  {
+    id: 'cpt-19',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Правило сетки (42 точки = 41 щель)',
+    answer: 'Отрезок, разбитый на N точек включительно, имеет (N - 1) интервалов. Шаг сетки: `step = (end - start) / (N - 1)`. Для 42 точек: `2π / 41`.',
+    difficulty: 'hard'
+  },
+  {
+    id: 'cpt-20',
+    category: 'concepts',
+    type: 'concept',
+    question: 'Плашка «Решаю сама 💪» для Дня 3',
+    answer: 'Квесты дня 3 (1948.c, char_decode.c, quest3.c, door_functions.c) пишутся самостоятельно на основе пройденных уроков 7, 9, 10, 11, 12!',
+    difficulty: 'easy'
   }
 ];

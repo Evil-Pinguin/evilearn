@@ -39,6 +39,7 @@ export interface Lesson {
   subtitle: string;
   icon: string;
   durationMinutes: number;
+  isDay3Prep?: boolean;
   theoryContent: {
     title: string;
     paragraphs: string[];
@@ -47,6 +48,10 @@ export interface Lesson {
       language: string;
       title?: string;
       notes?: string;
+    }[];
+    tables?: {
+      headers: string[];
+      rows: string[][];
     }[];
     callouts?: {
       type: 'tip' | 'warning' | 'danger' | 'analogy' | 'peer_review';
@@ -67,12 +72,13 @@ export interface Module {
   icon: string;
   color: string;
   badge: string;
-  lessons: string[]; // lesson ids
+  lessons: string[];
 }
 
 export interface Flashcard {
   id: string;
-  category: 'bash' | 'git' | 'c_basics' | 'c_advanced' | 'tools' | 'school21';
+  category: 'bash' | 'git' | 'c_basics' | 'c_advanced' | 'tools' | 'school21' | 'concepts';
+  type: 'command' | 'concept';
   question: string;
   answer: string;
   codeExample?: string;
@@ -84,11 +90,13 @@ export interface ExamQuestion {
   id: number;
   title: string;
   category: string;
-  type: 'code' | 'command' | 'choice' | 'number';
+  type: 'code' | 'command' | 'choice' | 'number' | 'text';
   description: string;
   starterCode?: string;
   options?: string[];
   correctAnswer?: string | number;
+  sampleInput?: string;
+  expectedOutputSample?: string;
   testCases?: {
     input: string;
     expected: string;
@@ -98,8 +106,24 @@ export interface ExamQuestion {
   points: number;
 }
 
+export interface Day2Quest {
+  id: string;
+  name: string;
+  file: string;
+  title: string;
+  description: string;
+  code: string;
+  lineByLine: {
+    line: number;
+    explanation: string;
+    concept: string;
+  }[];
+  keyTakeaways: string[];
+  peerReviewQuestions: string[];
+}
+
 export interface UserProgress {
-  completedLessons: string[]; // lesson ids where exercises are done or quiz >= 80%
+  completedLessons: string[];
   completedExercises: {
     [exerciseId: string]: {
       attemptedMyself: boolean;

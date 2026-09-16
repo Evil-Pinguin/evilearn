@@ -3,152 +3,263 @@ import { ExamQuestion } from '../types';
 export const examQuestionsData: ExamQuestion[] = [
   {
     id: 1,
-    title: 'Задача 1: Валидация ввода (double_it)',
-    category: 'C Basics',
+    title: 'Задача 1: Печать строки готовности',
+    category: 'Основы C',
     type: 'code',
     points: 10,
-    description: 'Напиши полную программу на C (с include <stdio.h> и main), которая читает одно целое число и печатает его удвоенное значение. Если на входе мусор или дробное число (например "12abc" или "4.5") — программа обязана напечатать "n/a\\n". Соблюдай единую точку выхода!',
+    description: 'Напиши полную программу на C (с include <stdio.h> и main), которая печатает "I am ready!" (строго без \\n в конце).',
     starterCode: `#include <stdio.h>
-
-static int tail_is_clean(void) {
-    int c;
-    while ((c = getchar()) != '\\n' && c != EOF) {
-        if (c != ' ' && c != '\\t' && c != '\\r') return 0;
-    }
-    return 1;
-}
 
 int main(void) {
     // Напиши код здесь
     
     return 0;
 }`,
+    expectedOutputSample: 'I am ready!',
     testCases: [
-      { input: '21', expected: '42', description: 'Число 21 -> 42' },
-      { input: '-5', expected: '-10', description: 'Отрицательное число -5 -> -10' },
-      { input: '12abc', expected: 'n/a', description: 'Мусор в хвосте 12abc -> n/a' },
-      { input: 'hello', expected: 'n/a', description: 'Текст hello -> n/a' }
+      { input: '', expected: 'I am ready!', description: 'Печать без \\n' }
     ],
-    explanation: 'Каноническое решение использует scanf("%d", &num) != 1 || !tail_is_clean(), флаг ошибки int error = 0, и ветвление с одной точкой выхода return 0 в конце main.'
+    explanation: 'Правильное решение: printf("I am ready!"); и return 0;.'
   },
   {
     id: 2,
-    title: 'Задача 2: Наибольший простой делитель числа 91',
-    category: 'Math Drill',
-    type: 'number',
+    title: 'Задача 2: Квадрат числа с валидацией',
+    category: 'Валидация ввода',
+    type: 'code',
     points: 10,
-    description: 'Найди НАИБОЛЬШИЙ простой делитель для числа 91. Введи только одно целое число в поле ответа. (Внимание: помни про кирпичики и проверку по списку простых!).',
-    correctAnswer: 13,
-    explanation: '91 не делится на 2, 3, 5. Проверяем 7: 91 / 7 = 13. Числа 7 и 13 оба простые. Наибольший простой множитель — 13.'
+    description: 'Напиши программу: читает целое число, печатает его квадрат. Если во вводе мусор (например "abc", "12.5" или "5x") — печатает "n/a".',
+    starterCode: `#include <stdio.h>
+
+int main(void) {
+    int n;
+    char extra;
+
+    // Ввод с валидацией и печать квадрата
+    
+    return 0;
+}`,
+    sampleInput: '5 -> 25 | abc -> n/a',
+    testCases: [
+      { input: '5', expected: '25', description: '5 -> 25' },
+      { input: '-4', expected: '16', description: '-4 -> 16' },
+      { input: 'abc', expected: 'n/a', description: 'abc -> n/a' },
+      { id: 't4', input: '12.5', expected: 'n/a', description: '12.5 -> n/a' }
+    ],
+    explanation: 'Используется %c-ловушка: if (scanf("%d %c", &n, &extra) != 1) printf("n/a"); else printf("%d", n * n);'
   },
   {
     id: 3,
-    title: 'Задача 3: Наибольший простой делитель числа 100',
-    category: 'Math Drill',
-    type: 'number',
+    title: 'Задача 3: Меньшее из двух (функция обязательна)',
+    category: 'Функции',
+    type: 'code',
     points: 10,
-    description: 'Найди НАИБОЛЬШИЙ простой делитель для числа 100. Введи только число. (Осторожно: 25 и 50 — составные числа, не попадись в ловушку!).',
-    correctAnswer: 5,
-    explanation: 'Разложение числа 100 на простые множители: 100 = 2 × 2 × 5 × 5. Простые делители числа 100 — это только 2 и 5. Наибольший из них — 5.'
+    description: 'Напиши программу: читает два целых числа, печатает меньшее. Вычисление меньшего числа ОБЯЗАНО быть вынесено в отдельную функцию (например min_of_two). Мусор -> n/a.',
+    starterCode: `#include <stdio.h>
+
+int min_of_two(int a, int b) {
+    // Твоя функция
+}
+
+int main(void) {
+    // Ввод и вызов
+    return 0;
+}`,
+    sampleInput: '3 9 -> 3 | 10 2 -> 2',
+    testCases: [
+      { input: '3 9', expected: '3', description: '3 9 -> 3' },
+      { input: '10 2', expected: '2', description: '10 2 -> 2' },
+      { input: '5 5', expected: '5', description: '5 5 -> 5' },
+      { input: '12x 5', expected: 'n/a', description: '12x 5 -> n/a' }
+    ],
+    explanation: 'Функция min_of_two(a, b) возвращает (a < b) ? a : b; main читает два числа с %c ловушкой: scanf("%d %d %c", &a, &b, &extra) != 2.'
   },
   {
     id: 4,
-    title: 'Задача 4: Спасение кода в Git (Откат файла)',
-    category: 'Git',
-    type: 'command',
+    title: 'Задача 4: Сумма чётных чисел от 1 до N',
+    category: 'Циклы',
+    type: 'code',
     points: 10,
-    description: 'Во время редактирования ты случайно удалила кусок кода в файле "src/quest3.c" и хочешь вернуть его к состоянию последнего коммита. Напиши точную команду Git.',
-    correctAnswer: 'git restore src/quest3.c',
-    explanation: 'Команда "git restore src/quest3.c" восстанавливает файл в рабочей директории до состояния HEAD/индекса.'
+    description: 'Напиши программу: читает целое N, печатает сумму всех чётных чисел от 1 до N. Пример: при N=10 -> 30 (2+4+6+8+10). Мусор -> n/a.',
+    starterCode: `#include <stdio.h>
+
+int main(void) {
+    int n;
+    char extra;
+
+    // Цикл подсчета четных чисел
+    
+    return 0;
+}`,
+    sampleInput: '10 -> 30 (2+4+6+8+10)',
+    testCases: [
+      { input: '10', expected: '30', description: '10 -> 30' },
+      { input: '5', expected: '6', description: '5 -> 6 (2+4)' },
+      { input: '1', expected: '0', description: '1 -> 0' },
+      { input: '12.5', expected: 'n/a', description: '12.5 -> n/a' }
+    ],
+    explanation: 'Накопление в цикле: int sum = 0; for (int i = 2; i <= n; i += 2) sum += i; printf("%d", sum);'
   },
   {
     id: 5,
-    title: 'Задача 5: Полная команда компиляции со всеми флагами',
-    category: 'Tools / GCC',
-    type: 'command',
+    title: 'Задача 5: Площадь круга с 3 знаками',
+    category: 'math.h & double',
+    type: 'code',
     points: 10,
-    description: 'Напиши полную команду сборки файла "door_functions.c" в исполняемый файл "door_functions" со всеми обязательными флагами Школы 21 (-Wall, -Werror, -Wextra, -std=c11) и математической библиотекой libm.',
-    correctAnswer: 'gcc -Wall -Werror -Wextra -std=c11 door_functions.c -lm -o door_functions',
-    explanation: 'Обязательные флаги: -Wall -Werror -Wextra -std=c11. Флаг -lm должен находиться строго после имени компилируемого файла, а -o задает выходной файл.'
+    description: 'Напиши программу: читает дробное число (радиус r), печатает площадь круга πr² с ровно тремя знаками после точки (%.3f). π = 3.14159265358979. Мусор или r < 0 -> n/a.',
+    starterCode: `#include <stdio.h>
+
+int main(void) {
+    double r;
+    char extra;
+
+    // Ввод %lf и вывод %.3f
+    
+    return 0;
+}`,
+    sampleInput: '2 -> 12.566',
+    testCases: [
+      { input: '2', expected: '12.566', description: 'r=2 -> 12.566' },
+      { input: '1', expected: '3.142', description: 'r=1 -> 3.142' },
+      { input: 'abc', expected: 'n/a', description: 'abc -> n/a' }
+    ],
+    explanation: 'Чтение через %lf, валидация if (r < 0) printf("n/a"); печать через printf("%.3f", 3.14159265358979 * r * r);'
   },
   {
     id: 6,
-    title: 'Задача 6: Деление вычитанием через указатель',
-    category: 'C Advanced',
+    title: 'Задача 6: Классификатор символов',
+    category: 'char & ASCII',
     type: 'code',
     points: 10,
-    description: 'Напиши функцию "long long divide_by_sub(long long val, long long div, long long *q)", которая без использования операторов "/" и "%" вычисляет частное и остаток. Частное должно быть записано по указателю *q, а остаток возвращен через return.',
-    starterCode: `long long divide_by_sub(long long val, long long div, long long *q) {
-    long long count = 0;
-    // Твой цикл вычитания здесь
+    description: 'Напиши программу: читает один символ. Если это латинская буква (\'A\'..\'Z\', \'a\'..\'z\') -> печатает LETTER, если цифра (\'0\'..\'9\') -> DIGIT, иначе -> OTHER. При ошибке ввода -> n/a.',
+    starterCode: `#include <stdio.h>
+
+int main(void) {
+    char c;
+    if (scanf("%c", &c) != 1) {
+        printf("n/a");
+        return 0;
+    }
+    // Классификация символа
     
-    *q = count;
-    return val;
+    return 0;
 }`,
-    explanation: 'Используется цикл while (val >= div) { val -= div; count++; } затем *q = count; return val;'
+    sampleInput: 'k -> LETTER | 7 -> DIGIT | ! -> OTHER',
+    testCases: [
+      { input: 'k', expected: 'LETTER', description: 'k -> LETTER' },
+      { input: '7', expected: 'DIGIT', description: '7 -> DIGIT' },
+      { input: '!', expected: 'OTHER', description: '! -> OTHER' }
+    ],
+    explanation: 'Сравнение диапазонов ASCII: if ((c>=\'A\' && c<=\'Z\') || (c>=\'a\' && c<=\'z\')) printf("LETTER"); else if (c>=\'0\' && c<=\'9\') printf("DIGIT"); else printf("OTHER");'
   },
   {
     id: 7,
-    title: 'Задача 7: Hex-декодирование в ASCII',
-    category: 'C Advanced',
-    type: 'choice',
+    title: 'Задача 7: НОД двух чисел (Алгоритм Евклида)',
+    category: 'Алгоритмы',
+    type: 'code',
     points: 10,
-    description: 'Какое слово получится при декодировании hex-последовательности байтов "46 49 42 4F 4E 41 43 43 49 32 31"?\n(Подсказка: 46 = \'F\', 49 = \'I\', 42 = \'B\', 32 = \'2\', 31 = \'1\')',
-    options: [
-      'HELLOWORLD',
-      'FIBONACCI21',
-      'PEERREVIEW',
-      'DOORFUNCTION'
+    description: 'Напиши программу: читает два целых положительных числа, печатает их наибольший общий делитель (НОД) по алгоритму Евклида вычитанием (заменяй большее число на разность большего и меньшего, пока они не станут равны). Мусор или числа <= 0 -> n/a.',
+    starterCode: `#include <stdio.h>
+
+int main(void) {
+    int a, b;
+    char extra;
+
+    if (scanf("%d %d %c", &a, &b, &extra) != 2 || a <= 0 || b <= 0) {
+        printf("n/a");
+        return 0;
+    }
+    // Алгоритм Евклида вычитанием
+    
+    return 0;
+}`,
+    sampleInput: '12 18 -> 6',
+    testCases: [
+      { input: '12 18', expected: '6', description: '12 18 -> 6' },
+      { input: '100 25', expected: '25', description: '100 25 -> 25' },
+      { input: '17 19', expected: '1', description: '17 19 -> 1' }
     ],
-    correctAnswer: 'FIBONACCI21',
-    explanation: '46=\'F\', 49=\'I\', 42=\'B\', 4F=\'O\', 4E=\'N\', 41=\'A\', 43=\'C\', 43=\'C\', 49=\'I\', 32=\'2\', 31=\'1\' образует слово FIBONACCI21 (пасхалка сюжета Квеста 2).'
+    explanation: 'while (a != b) { if (a > b) a -= b; else b -= a; } printf("%d", a);'
   },
   {
     id: 8,
-    title: 'Задача 8: Последствия отсутствия базового случая в рекурсии',
-    category: 'C Advanced',
-    type: 'choice',
+    title: 'Задача 8: Таблица квадратов и кубов',
+    category: 'Форматный вывод',
+    type: 'code',
     points: 10,
-    description: 'Что произойдет во время работы программы при рекурсивном вызове функции, если в ней забыли написать условие выхода (базовый случай)?',
-    options: [
-      'Программа завершится с кодом 0',
-      'Произойдет бесконечное выделение стековых фреймов, стек переполнится, и ОС завершит процесс ошибкой Segmentation Fault (Stack Overflow)',
-      'Компилятор gcc выдаст ошибку во время сборки с флагом -Wall',
-      'Программа автоматически переключится на итеративный цикл'
+    description: 'Напиши программу: НИЧЕГО не читает. Печатает таблицу для x от 1 до 10, в каждой строке: x, x² и x³, разделенные " | ". Формат строки: "x | x^2 | x^3\\n". Пример 7-й строки: "7 | 49 | 343\\n".',
+    starterCode: `#include <stdio.h>
+
+int main(void) {
+    for (int i = 1; i <= 10; i++) {
+        // Печатай строку
+    }
+    return 0;
+}`,
+    sampleInput: 'строки вида "7 | 49 | 343"',
+    testCases: [
+      { input: '', expected: '1 | 1 | 1\n2 | 4 | 8\n3 | 9 | 27\n4 | 16 | 64\n5 | 25 | 125\n6 | 36 | 216\n7 | 49 | 343\n8 | 64 | 512\n9 | 81 | 729\n10 | 100 | 1000\n', description: 'Таблица 1..10' }
     ],
-    correctAnswer: 'Произойдет бесконечное выделение стековых фреймов, стек переполнится, и ОС завершит процесс ошибкой Segmentation Fault (Stack Overflow)',
-    explanation: 'Каждый рекурсивный вызов аллоцирует фрейм в стеке (адрес возврата, локальные переменные). Без базового случая стек неминуемо переполняется (Stack Overflow).'
+    explanation: 'printf("%d | %d | %d\\n", i, i * i, i * i * i);'
   },
   {
     id: 9,
-    title: 'Задача 9: Расчет шага дискретизации сетки',
-    category: 'School 21 Logic',
-    type: 'choice',
+    title: 'Задача 9: Рекурсивный факториал',
+    category: 'Рекурсия',
+    type: 'code',
     points: 10,
-    description: 'Отрезок длиной L разбивается на N точек (включая обе границы). По какой формуле вычисляется шаг сетки step?',
-    options: [
-      'step = L / N',
-      'step = L / (N - 1)',
-      'step = (L - 1) / N',
-      'step = L * (N - 1)'
+    description: 'Напиши программу: читает целое число N (от 0 до 12), вычисляет N! СТРОГО РЕКУРСИВНОЙ ФУНКЦИЕЙ factorial(). Пример: 5 -> 120. Мусор или N < 0 -> n/a.',
+    starterCode: `#include <stdio.h>
+
+int factorial(int n) {
+    // Рекурсивный расчет
+}
+
+int main(void) {
+    int n;
+    char extra;
+
+    if (scanf("%d %c", &n, &extra) != 1 || n < 0 || n > 12) {
+        printf("n/a");
+        return 0;
+    }
+    printf("%d", factorial(n));
+    return 0;
+}`,
+    sampleInput: '5 -> 120 | 0 -> 1',
+    testCases: [
+      { input: '5', expected: '120', description: '5! = 120' },
+      { input: '0', expected: '1', description: '0! = 1' },
+      { input: '3', expected: '6', description: '3! = 6' }
     ],
-    correctAnswer: 'step = L / (N - 1)',
-    explanation: 'По правилу «забора с досками»: N точек образуют (N - 1) интервалов. Поэтому шаг равен общей длине, деленной на (N - 1). Для 42 точек шаг = 2*PI / 41.'
+    explanation: 'int factorial(int n) { if (n <= 1) return 1; return n * factorial(n - 1); }'
   },
   {
     id: 10,
-    title: 'Задача 10: Принцип одной точки выхода Дейкстры',
-    category: 'Code Style & Standards',
-    type: 'choice',
+    title: 'Задача 10: Наибольший собственный делитель числа',
+    category: 'Алгоритмы делимости',
+    type: 'code',
     points: 10,
-    description: 'Какой из следующих фрагментов кода функции строго соответствует стандартам структурного программирования Школы 21?',
-    options: [
-      'int check(int x) {\n  if (x < 0) return -1;\n  if (x == 0) return 0;\n  return 1;\n}',
-      'int check(int x) {\n  int res = 0;\n  if (x < 0) res = -1;\n  else if (x > 0) res = 1;\n  return res;\n}',
-      'int check(int x) {\n  if (x < 0) goto err;\n  return 1;\nerr: return -1;\n}',
-      'int res;\nvoid check(int x) {\n  res = x;\n}'
+    description: 'Напиши программу: читает целое N > 1, печатает его НАИБОЛЬШИЙ делитель, кроме самого числа N (собственный делитель). Пример: 100 -> 50, 17 -> 1. Мусор или N <= 1 -> n/a.',
+    starterCode: `#include <stdio.h>
+
+int main(void) {
+    int n;
+    char extra;
+
+    if (scanf("%d %c", &n, &extra) != 1 || n <= 1) {
+        printf("n/a");
+        return 0;
+    }
+    // Поиск наибольшего делителя d < n
+    
+    return 0;
+}`,
+    sampleInput: '100 -> 50 | 17 -> 1',
+    testCases: [
+      { input: '100', expected: '50', description: '100 -> 50' },
+      { input: '17', expected: '1', description: '17 -> 1' },
+      { input: '12', expected: '6', description: '12 -> 6' }
     ],
-    correctAnswer: 'int check(int x) {\n  int res = 0;\n  if (x < 0) res = -1;\n  else if (x > 0) res = 1;\n  return res;\n}',
-    explanation: 'Второй вариант имеет ровно одну точку выхода (единственный return в конце), использует локальную переменную для сохранения результата и не использует запрещенные операторы goto или глобальные переменные.'
+    explanation: 'Ищем сверху вниз: for (int d = n / 2; d >= 1; d--) { if (n % d == 0) { printf("%d", d); break; } }'
   }
 ];

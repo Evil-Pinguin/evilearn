@@ -7,10 +7,10 @@ import { ExamView } from './views/ExamView';
 import { FlashcardsView } from './views/FlashcardsView';
 import { MathDrillView } from './views/MathDrillView';
 import { ToolsView } from './views/ToolsView';
-import { Terminal, Heart } from 'lucide-react';
+import { Day2QuestsView } from './views/Day2QuestsView';
 
 export const AppContent: React.FC = () => {
-  const [currentView, setCurrentView] = useState<'home' | 'lesson' | 'exam' | 'flashcards' | 'math' | 'tools'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'lesson' | 'exam' | 'flashcards' | 'math' | 'tools' | 'day2'>('home');
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
 
   const handleSelectLesson = (lessonId: string) => {
@@ -19,7 +19,7 @@ export const AppContent: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleNavigate = (view: 'exam' | 'flashcards' | 'math' | 'tools') => {
+  const handleNavigate = (view: 'exam' | 'flashcards' | 'math' | 'tools' | 'day2') => {
     setCurrentView(view);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -51,6 +51,8 @@ export const AppContent: React.FC = () => {
           />
         )}
 
+        {currentView === 'day2' && <Day2QuestsView />}
+
         {currentView === 'exam' && <ExamView />}
 
         {currentView === 'flashcards' && <FlashcardsView />}
@@ -73,6 +75,8 @@ export const AppContent: React.FC = () => {
             <span>gcc -Wall -Werror -Wextra -std=c11</span>
             <span>•</span>
             <span>Dijkstra Single Exit</span>
+            <span>•</span>
+            <span>Решаю сама 💪</span>
           </div>
         </div>
       </footer>
